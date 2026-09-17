@@ -2,14 +2,14 @@
 
 > Learn Linux step by step—from setup to commands, permissions, automation, and basic web hosting.
 
-![Linux](https://img.shields.io/badge/Linux-Tutorial-FCC624?logo=linux&logoColor=black)
-![Ubuntu](https://img.shields.io/badge/Ubuntu-LTS-E95420?logo=ubuntu&logoColor=white)
-![Bash](https://img.shields.io/badge/Shell-Bash-121011?logo=gnubash&logoColor=white)
-![WSL](https://img.shields.io/badge/Windows-WSL-0078D6?logo=windows&logoColor=white)
-![VirtualBox](https://img.shields.io/badge/Virtualization-VirtualBox-183A61?logo=virtualbox&logoColor=white)
-![Nginx](https://img.shields.io/badge/Web%20Server-Nginx-009639?logo=nginx&logoColor=white)
-![Markdown](https://img.shields.io/badge/Docs-Markdown-000000?logo=markdown&logoColor=white)
-![Beginner Friendly](https://img.shields.io/badge/Level-Beginner%20Friendly-2ea44f)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![Bash](https://img.shields.io/badge/Bash-121011?style=for-the-badge&logo=gnubash&logoColor=white)
+![WSL](https://img.shields.io/badge/WSL-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![VirtualBox](https://img.shields.io/badge/VirtualBox-183A61?style=for-the-badge&logo=virtualbox&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)
+![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white)
+![Beginner Friendly](https://img.shields.io/badge/Beginner%20Friendly-2ea44f?style=for-the-badge)
 
 ## Overview
 
