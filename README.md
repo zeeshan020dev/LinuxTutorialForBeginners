@@ -56,29 +56,6 @@ Follow this exact sequence:
 
 ---
 
-## Table of Contents
-
-1. [What is Linux?](#what-is-linux)
-2. [History of Linux](#history-of-linux)
-3. [Getting an online Linux Server](#getting-an-online-linux-server)
-4. [Installing Linux through VirtualBox on Windows](#installing-linux-through-virtualbox-on-windows)
-5. [Installing Linux on Windows using WSL](#installing-linux-on-windows-using-wsl)
-6. [Installing Linux through VirtualBox on Mac](#installing-linux-through-virtualbox-on-mac)
-7. [Basic Linux Commands](#basic-linux-commands)
-8. [Creating Users](#creating-users)
-9. [Package Management](#package-management)
-10. [Groups & Permissions](#groups--permissions)
-11. [Processes & Services](#processes--services)
-12. [Environment Variables, PATH and Bashrc](#environment-variables-path-and-bashrc)
-13. [Archives and Compression](#archives-and-compression)
-14. [Cronjobs](#cronjobs)
-15. [Understanding Linux Filesystem](#understanding-linux-filesystem)
-16. [Understanding Nginx](#understanding-nginx)
-17. [Using FileZilla to Transfer Files](#using-filezilla-to-transfer-files)
-18. [Conclusion](#conclusion)
-
----
-
 ## What is Linux?
 
 Linux is an open-source operating system kernel. In simple terms, it is the core software layer that connects your hardware with the software you run.
