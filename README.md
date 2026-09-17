@@ -13,48 +13,7 @@
 
 ## Overview
 
-This repository is a practical Linux learning guide for beginners. It follows a clear sequence: understand Linux, set up a learning environment, learn daily commands, manage users and permissions, handle package installation, automate tasks, and host simple services with Nginx.
-
-## About This Repository
-
-This project is designed for beginners who want to learn Linux from scratch in a simple, structured, and hands-on way. It covers essential Linux concepts such as installation, command-line usage, file management, system users, permissions, package management, Bash scripting basics, cron jobs, environment variables, networking basics, and web server setup.
-
-It is especially useful for:
-
-- Students learning Linux for the first time
-- Developers preparing for DevOps or backend work
-- Windows/macOS users transitioning to Linux
-- Anyone looking for a beginner-friendly Linux tutorial with Ubuntu-based examples
-
-The goal of this repository is to make Linux approachable, practical, and relevant for real-world development and system administration tasks.
-
-## SEO Keywords
-
-Linux tutorial for beginners, learn Linux commands, Ubuntu tutorial, Linux basics, Bash scripting, Linux for developers, WSL tutorial, VirtualBox Linux setup, Linux permissions guide, APT package management, Nginx beginner guide, cron jobs tutorial, Linux filesystem explained, Linux for DevOps, beginner Linux cheat sheet.
-
-## Topics Covered
-
-This repository covers the most important beginner-friendly Linux topics in a logical order:
-
-- Linux fundamentals and history
-- Getting an online Linux server
-- Installing Linux on Windows using VirtualBox
-- Installing Linux on Windows with WSL
-- Installing Linux on Mac using VirtualBox
-- Basic Linux commands
-- Working with files and directories
-- Creating and managing users
-- Package management with APT
-- Groups and file permissions
-- Processes and services
-- Environment variables and PATH
-- Bashrc configuration
-- Archiving and compression
-- Cron jobs and automation
-- Linux filesystem structure
-- Nginx basics and web hosting
-- File transfer with FileZilla
-- Linux learning roadmap and next steps
+This repository is a practical Linux learning guide for beginners. It follows a clear sequence: understand Linux, set up a learning environment, learn daily commands, manage users and permissions, automate with cron, and deploy with Nginx.
 
 ## Who this is for
 
@@ -107,7 +66,7 @@ Linux is an open-source operating system kernel. In simple terms, it is the core
 
 ## History of Linux
 
-Linux has roots in Unix (1969). In 1991, Linus Torvalds started Linux as a free and open kernel project. Over time, Linux became a foundation for servers, cloud systems, Android, and development environments.
+Linux has roots in Unix (1969). In 1991, Linus Torvalds started Linux as a free and open kernel project. Over time, Linux became a foundation for servers, cloud systems, Android, and development environments worldwide.
 
 ## Getting an online Linux Server
 
