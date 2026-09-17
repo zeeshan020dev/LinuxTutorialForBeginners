@@ -21,16 +21,6 @@ This repository is a practical Linux learning guide for beginners. It follows a 
 - Windows/macOS users who want a Linux practice setup
 - Beginners preparing for cloud, backend, or sysadmin learning
 
-## Prerequisites
-
-- A computer (Windows/macOS/Linux)
-- Internet connection
-- Around 4 GB RAM and ~35 GB free disk space for a VM
-- Willingness to practice commands in a safe test environment
-
-> [!TIP]
-> Use a virtual machine or test server while learning. Avoid practicing risky commands on your main system.
-
 ## Recommended Learning Path
 
 Follow this exact sequence:
