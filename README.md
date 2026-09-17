@@ -1,4 +1,4 @@
-# Linux for Beginners
+# Linux Tutorial For Beginners
 
 A complete beginner-friendly guide to Linux — covering installation, essential commands, users & permissions, package management, processes, environment variables, archiving, cron jobs, the filesystem, Nginx, and file transfer.
 
