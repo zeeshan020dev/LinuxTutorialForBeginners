@@ -1,321 +1,442 @@
-# 🐧 Linux Tutorial for Beginners
+# Linux Tutorial for Beginners
 
-> A practical, beginner-friendly guide to learning Linux from the ground up.
+> Learn Linux step by step—from setup to commands, permissions, automation, and basic web hosting.
 
-[![Linux](https://img.shields.io/badge/Linux-Beginner%20Friendly-FCC624?logo=linux&logoColor=black)](https://www.linux.org/)
-[![Ubuntu](https://img.shields.io/badge/Ubuntu-LTS-E95420?logo=ubuntu&logoColor=white)](https://ubuntu.com/)
-[![Markdown](https://img.shields.io/badge/Format-Markdown-000000?logo=markdown&logoColor=white)](https://www.markdownguide.org/)
+![Linux](https://img.shields.io/badge/Linux-Tutorial-FCC624?logo=linux&logoColor=black)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-LTS-E95420?logo=ubuntu&logoColor=white)
+![Bash](https://img.shields.io/badge/Shell-Bash-121011?logo=gnubash&logoColor=white)
+![WSL](https://img.shields.io/badge/Windows-WSL-0078D6?logo=windows&logoColor=white)
+![VirtualBox](https://img.shields.io/badge/Virtualization-VirtualBox-183A61?logo=virtualbox&logoColor=white)
+![Nginx](https://img.shields.io/badge/Web%20Server-Nginx-009639?logo=nginx&logoColor=white)
+![Markdown](https://img.shields.io/badge/Docs-Markdown-000000?logo=markdown&logoColor=white)
+![Beginner Friendly](https://img.shields.io/badge/Level-Beginner%20Friendly-2ea44f)
 
-Learn the Linux fundamentals needed for software development, DevOps, cloud computing, cybersecurity, and system administration.
+## Overview
 
-## ✨ What You’ll Learn
+This repository is a practical Linux learning guide for beginners. It follows a clear sequence: understand Linux, set up a learning environment, learn daily commands, manage users and permissions, automate with cron, and deploy with Nginx.
 
-- 🖥️ Install Linux using VirtualBox and WSL
-- ⌨️ Use essential Linux commands
-- 👤 Create and manage users
-- 🔐 Understand groups, ownership, and permissions
-- 📦 Install and manage software with APT
-- ⚙️ Manage processes and services
-- 🌎 Work with environment variables and `PATH`
-- 🗜️ Create archives and compress files
-- ⏰ Schedule tasks with cron
-- 🌳 Understand the Linux filesystem
-- 🚀 Host websites with Nginx
-- 📁 Transfer files using FileZilla
+## Who this is for
 
-## 🎯 Who Is This Guide For?
+- Students starting Linux for development or DevOps
+- Windows/macOS users who want a Linux practice setup
+- Beginners preparing for cloud, backend, or sysadmin learning
 
-This tutorial is designed for:
+## Prerequisites
 
-- Complete Linux beginners
-- Developers learning server administration
-- Students preparing for DevOps or cloud roles
-- Windows and macOS users who want to practice Linux
+- A computer (Windows/macOS/Linux)
+- Internet connection
+- Around 4 GB RAM and ~35 GB free disk space for a VM
+- Willingness to practice commands in a safe test environment
 
-## 🧭 Recommended Learning Path
+> [!TIP]
+> Use a virtual machine or test server while learning. Avoid practicing risky commands on your main system.
 
-Follow the chapters in this order:
+## Recommended Learning Path
 
-1. [What Is Linux?](#what-is-linux)
-2. [Install Linux](#installing-linux-through-virtualbox-on-windows)
-3. [Basic Linux Commands](#basic-linux-commands)
-4. [Users, Groups, and Permissions](#creating-users)
-5. [Package Management](#package-management)
-6. [Processes and Services](#processes--services)
-7. [Environment Variables](#environment-variables-path-and-bashrc)
-8. [Archives and Compression](#archives-and-compression)
-9. [Cron Jobs](#cronjobs)
-10. [Linux Filesystem](#understanding-the-linux-filesystem)
-11. [Nginx](#understanding-nginx)
+Follow this exact sequence:
 
-> 💡 **Tip:** Practice every command in a virtual machine or test server instead of using your main computer.
+1. [What is Linux?](#what-is-linux)
+2. [History of Linux](#history-of-linux)
+3. [Getting an online Linux Server](#getting-an-online-linux-server)
+4. [Installing Linux through VirtualBox on Windows](#installing-linux-through-virtualbox-on-windows)
+5. [Installing Linux on Windows using WSL](#installing-linux-on-windows-using-wsl)
+6. [Installing Linux through VirtualBox on Mac](#installing-linux-through-virtualbox-on-mac)
+7. [Basic Linux Commands](#basic-linux-commands)
+8. [Creating Users](#creating-users)
+9. [Package Management](#package-management)
+10. [Groups & Permissions](#groups--permissions)
+11. [Processes & Services](#processes--services)
+12. [Environment Variables, PATH and Bashrc](#environment-variables-path-and-bashrc)
+13. [Archives and Compression](#archives-and-compression)
+14. [Cronjobs](#cronjobs)
+15. [Understanding Linux Filesystem](#understanding-linux-filesystem)
+16. [Understanding Nginx](#understanding-nginx)
+17. [Using FileZilla to Transfer Files](#using-filezilla-to-transfer-files)
+18. [Conclusion](#conclusion)
+
+---
+
+## Table of Contents
+
+1. [What is Linux?](#what-is-linux)
+2. [History of Linux](#history-of-linux)
+3. [Getting an online Linux Server](#getting-an-online-linux-server)
+4. [Installing Linux through VirtualBox on Windows](#installing-linux-through-virtualbox-on-windows)
+5. [Installing Linux on Windows using WSL](#installing-linux-on-windows-using-wsl)
+6. [Installing Linux through VirtualBox on Mac](#installing-linux-through-virtualbox-on-mac)
+7. [Basic Linux Commands](#basic-linux-commands)
+8. [Creating Users](#creating-users)
+9. [Package Management](#package-management)
+10. [Groups & Permissions](#groups--permissions)
+11. [Processes & Services](#processes--services)
+12. [Environment Variables, PATH and Bashrc](#environment-variables-path-and-bashrc)
+13. [Archives and Compression](#archives-and-compression)
+14. [Cronjobs](#cronjobs)
+15. [Understanding Linux Filesystem](#understanding-linux-filesystem)
+16. [Understanding Nginx](#understanding-nginx)
+17. [Using FileZilla to Transfer Files](#using-filezilla-to-transfer-files)
+18. [Conclusion](#conclusion)
 
 ---
 
 ## What is Linux?
 
-Linux is an open-source operating system kernel that lets you communicate directly with the hardware.
+Linux is an open-source operating system kernel. In simple terms, it is the core software layer that connects your hardware with the software you run.
 
-Open source means software whose source code is publicly available to use, study, modify, and share.
+- **Open source** means the code is publicly available
+- Anyone can study, improve, and distribute Linux-based systems
+- Popular Linux distributions include Ubuntu, Debian, Fedora, and Arch
 
 ## History of Linux
 
-Linux originated from Unix, which was created by Ken Thompson and Dennis Ritchie in 1969.
+Linux has roots in Unix (1969). In 1991, Linus Torvalds started Linux as a free and open kernel project. Over time, Linux became a foundation for servers, cloud systems, Android, and development environments worldwide.
 
-## Getting an Online Linux Server
+## Getting an online Linux Server
 
-You can get one via a VPS (Virtual Private Server) by taking hosting from Hostinger.
+You can practice Linux on a cloud VPS (Virtual Private Server).
 
-Choose the **KVM 2** plan and select **Ubuntu** with an **LTS** version.
+Typical beginner path:
+
+1. Choose a VPS provider
+2. Select Ubuntu LTS image
+3. Start with a small plan (for learning)
+4. Connect via SSH and begin command practice
+
+> [!NOTE]
+> The original learning path recommends choosing an Ubuntu LTS server plan for stability.
 
 ## Installing Linux through VirtualBox on Windows
 
-1. Go to [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads) and click on **Windows host**.
-2. Install it with the default settings, clicking **Yes** on all options without changing anything.
-3. To create a new VM, download Ubuntu from the official site.
-4. Download the **Intel or AMD 64-bit** architecture ISO from [https://ubuntu.com/download/desktop](https://ubuntu.com/download/desktop) — make sure it's an **LTS** version of Ubuntu.
-5. After downloading the ISO, click **New** in VirtualBox and add the ISO file under **ISO Image**.
-6. Name the VM (e.g., "ubuntu" or whatever you prefer).
-7. Click **Next**.
-8. Enter your username and password, then click **Next**.
-9. Assign at least **4GB RAM**, **2 CPU cores** (50% of your CPU), and **35GB storage** to the VM.
-10. The terminal lets you work by issuing commands.
+1. Download VirtualBox from [virtualbox.org](https://www.virtualbox.org/wiki/Downloads) (`Windows hosts`)
+2. Download Ubuntu Desktop LTS ISO from [ubuntu.com](https://ubuntu.com/download/desktop)
+3. Create a new VM in VirtualBox
+4. Attach the Ubuntu ISO
+5. Set username/password during setup
+6. Allocate resources (recommended learning baseline):
+   - 4 GB RAM
+   - 2 CPU cores
+   - 35 GB storage
+7. Complete installation and open terminal
+
+### Practice check
+
+```bash
+pwd
+whoami
+ls
+```
 
 ## Installing Linux on Windows using WSL
 
-1. Open PowerShell as **Administrator**.
-2. Run:
-   ```
-   wsl --install
-   ```
-3. List available distributions:
-   ```
-   wsl --list --online
-   ```
-4. Install Ubuntu.
+Quick start:
 
-> *(Detailed step-by-step instructions to be added.)*
+```bash
+wsl --install
+wsl --list --online
+```
+
+Then install Ubuntu from the list (or Microsoft Store).
+
+> [!IMPORTANT]
+> 🚧 **Work in progress:** detailed step-by-step WSL setup is still being expanded in this tutorial.
 
 ## Installing Linux through VirtualBox on Mac
 
-> *(Step-by-step guide to be added.)*
+Install VirtualBox for macOS, download Ubuntu ISO, and create a VM using a similar flow to Windows (adjusting host-specific permissions/settings).
+
+> [!IMPORTANT]
+> 🚧 **Work in progress:** detailed step-by-step macOS VirtualBox instructions are still being added.
 
 ## Basic Linux Commands
 
-- `pwd` — present working directory
-- `cd` — change directory
-  - `cd ../` moves one step back
-- `ls` — display listings
-- Press **Tab** to autocomplete a folder name.
-- `mkdir [folder-name]` — create a directory
-- `mkdir -p folder1/folder2/folder3` — create nested directories
-- `touch [filename]` — create an empty file
-- `vim [filename]` — edit a file
-  - If you see an error like `Command 'vim' not found`, run: `sudo apt install vim`
-  - Open the file again with `vim [filename]`, press `i` to enter insert mode, type your content, then press `Esc`, type `:wq`, and press Enter to save and exit.
-  - To exit without saving, use `:q!` instead of `:wq`.
-- `cp [filename1] [destination-path/filename2]` — copy the content of filename1 to filename2
-- `cat [filename]` — display the content of a file in the terminal
-- `cat -n [filename]` — display the content of a file with line numbers
-- `less [filename]` — display the content of a file in the terminal (press `q` to exit)
-  - `cat` is useful for small files; `less` is useful for large files.
-- `clear` — clear the terminal screen
-- `history` — view command history
-  - You can also use the **Up/Down arrow keys** to browse command history — useful for retyping long commands.
-- `cd ~` — go back to the user's home directory
-- `cd /` — go to the root of the machine
-- `cd .` — current directory
-- `cd ../[DirectoryName]` — parent directory
+### Navigation
+
+| Command | Purpose |
+|---|---|
+| `pwd` | Show current working directory |
+| `ls` | List files and directories |
+| `cd <dir>` | Move into a directory |
+| `cd ..` | Move to parent directory |
+| `cd ~` | Move to your home directory |
+| `cd /` | Move to filesystem root (`/`) |
+| `cd .` | Refer to current directory |
+
+> [!NOTE]
+> `/` is the top-level filesystem root. `~` is your current user's home directory.
+
+### Files and editing
+
+| Command | Purpose |
+|---|---|
+| `mkdir project` | Create directory |
+| `mkdir -p a/b/c` | Create nested directories |
+| `touch notes.txt` | Create empty file |
+| `vim notes.txt` | Edit file in Vim |
+| `cp src.txt dst.txt` | Copy file |
+| `mv file.txt /path/` | Move file |
+| `cat file.txt` | Print file content |
+| `cat -n file.txt` | Print content with line numbers |
+| `less file.txt` | View large file interactively |
+| `clear` | Clear terminal screen |
+| `history` | Show command history |
+
+If Vim is missing:
+
+```bash
+sudo apt update
+sudo apt install vim
+```
+
+### Practice exercise
+
+```bash
+mkdir linux-practice
+cd linux-practice
+touch notes.txt
+echo "My first Linux note" > notes.txt
+cat -n notes.txt
+cd ..
+```
 
 ## Creating Users
 
-- `whoami` — check who you are: the main user (root) or a sub-user.
-  - The root user can create multiple users.
-- `sudo adduser [username]` — create a sub-user in Ubuntu.
-  - `sudo` means run this command with full privileges.
-- `su - [username]` — log in as that user.
-  - Note: this user cannot do everything the main user can. For example, it cannot run `sudo apt update`.
-- `exit` — go back to the root user.
-- `sudo usermod -aG sudo [username]` — grant a user sudo privileges (i.e., full privileges).
+| Command | Purpose |
+|---|---|
+| `whoami` | Show current user |
+| `sudo adduser <username>` | Create user (Ubuntu) |
+| `su - <username>` | Switch to that user login shell |
+| `exit` | Return to previous shell |
+| `sudo usermod -aG sudo <username>` | Grant sudo access |
+
+> [!WARNING]
+> `sudo` runs commands with elevated privileges. Double-check every command before pressing Enter.
+
+### Practice exercise
+
+```bash
+sudo adduser learner1
+su - learner1
+whoami
+exit
+```
 
 ## Package Management
 
-Advanced Package Tool (APT) is a free software tool for installing and removing software on Debian-based Linux distributions.
+Ubuntu uses APT (Advanced Package Tool).
 
-Ubuntu is Debian-based, and Debian is one of the most popular Linux-based operating systems.
-
-- `sudo apt update` — update Ubuntu's package listing. All available software and package versions are refreshed.
-- `sudo apt install apache2` — install Apache2, used to host HTML files on your machine.
-- `sudo apt upgrade` — upgrade all software on your machine.
-- `sudo apt remove apache2` — remove Apache2 from your machine.
-- `sudo apt install nginx` — install Nginx on your machine.
-- `sudo apt show nginx` — show information about Nginx; useful for debugging if the package crashes or an error occurs.
-- `sudo apt install curl git python3` — install curl, git, and python3 at the same time. You can install multiple packages in a single command.
-- `sudo apt purge apache2` — remove software along with all its configuration files; used to completely remove software from your machine.
-- `apt list --installed` — display all installed packages with their version numbers.
-- `sudo apt-get update` — used on older Ubuntu machines; now shortened to `sudo apt update`.
+| Command | Purpose |
+|---|---|
+| `sudo apt update` | Refresh package index |
+| `sudo apt upgrade` | Upgrade installed packages |
+| `sudo apt install apache2` | Install Apache |
+| `sudo apt remove apache2` | Remove package |
+| `sudo apt purge apache2` | Remove package + config |
+| `sudo apt install nginx` | Install Nginx |
+| `sudo apt show nginx` | Show package details |
+| `sudo apt install curl git python3` | Install multiple packages |
+| `apt list --installed` | List installed packages |
+| `sudo apt-get update` | Legacy equivalent of apt update |
 
 ## Groups & Permissions
 
-- `sudo groupadd [groupname]` — create a group of users.
-- `sudo useradd -m [username]` — create a user inside a group. The `-m` flag creates a home directory for the user.
-- `sudo passwd [username]` — set the password for the user.
-- `sudo usermod -aG [groupname] [username]` — add a user to a group.
-  - `-aG` means append the user to this group.
-- `groups [username]` — see which groups a user belongs to.
-  - Output format: `[username] : [primary group (name of user)] [supplementary group]`
-- `ls -l` — list the owner, group, and permissions of files/directories.
-  - Example output: `drwxr-x---`. `d` means directory, and `rwxr-x---` represents permissions, split into three parts:
-    - `rwx` — owner can read, write, and execute.
-    - `r-x` — group can read and execute only.
-    - `---` — others can do nothing.
-- `sudo chown [username] [directoryname]` — change the owner of the directory.
-- `sudo chgrp [groupname] [directoryname]` — change the group of the directory.
-- `chmod g+w [directoryname]` — grant the group write permission on the folder.
-  - `u+w` — grant write permission to the owner.
-  - `g+w` — grant write permission to the group.
-  - `o+w` — grant write permission to others.
-  - `a+w` — grant write permission to everyone.
-  - `a-w` — remove write permission from everyone.
-  - `u-w` — remove write permission from the owner.
-- `chmod [number] [directoryname]` — assign permissions to a directory using octal numbers.
-  - You can calculate the number using the octal system or an online "chmod calculator."
-  - `read = 4`, `write = 2`, `execute = 1`.
+| Command | Purpose |
+|---|---|
+| `sudo groupadd <group>` | Create group |
+| `sudo useradd -m <user>` | Create user with home directory |
+| `sudo passwd <user>` | Set user password |
+| `sudo usermod -aG <group> <user>` | Add user to group |
+| `groups <user>` | Show user groups |
+| `ls -l` | Show ownership + permission bits |
+| `sudo chown <user> <path>` | Change owner |
+| `sudo chgrp <group> <path>` | Change group |
+| `chmod g+w <path>` | Add group write permission |
+| `chmod <octal> <path>` | Set octal permissions |
+
+Permission math:
+
+- `r = 4`, `w = 2`, `x = 1`
+- Example: `755` = owner `rwx`, group `r-x`, others `r-x`
+
+> [!WARNING]
+> `chmod`, `chown`, and `chgrp` can lock users out or expose files. Apply changes only to intended paths.
 
 ## Processes & Services
 
-A process is a running program. Every process has an ID called a PID.
+A **process** is a running program (with a PID). A **service** is a managed background process.
 
-- `ps` — check running processes.
-- `ps aux` — view all processes run by all users.
-- `ps aux | grep nginx` — view all processes containing "nginx."
-- `top` — view all running processes in real time, sorted by resource usage.
-  - Press `q` to exit.
-- `htop` — a fancier, more graphical version of `top`.
-  - Press `F6` to sort by any column. Press `F10` or `q` to quit.
-  - If `htop` isn't found, install it with `sudo apt install htop`.
-- `kill [PID]` — kill the process with the specified PID.
-- `kill -9 [PID]` — forcefully kill the process with the specified PID. Use this if `kill [PID]` doesn't work.
-- `pkill [package-name]` — kill all processes matching a specific package name (e.g., git, python).
+| Command | Purpose |
+|---|---|
+| `ps` | Show current shell processes |
+| `ps aux` | Show all processes |
+| `ps aux | grep nginx` | Filter processes |
+| `top` | Real-time process view |
+| `htop` | Improved interactive process view |
+| `kill <PID>` | Stop process gracefully |
+| `kill -9 <PID>` | Force kill process |
+| `pkill <name>` | Kill by process name |
+| `systemctl status nginx` | Service status |
+| `systemctl start nginx` | Start service |
+| `systemctl stop nginx` | Stop service |
+| `systemctl restart nginx` | Restart service |
+| `sudo systemctl reload nginx` | Reload config without full stop |
+| `sudo systemctl enable nginx` | Start service at boot |
+| `sudo systemctl disable nginx` | Disable auto-start |
 
-A service is a program that runs automatically in the background.
-
-- `systemctl status nginx` — check the status of the Nginx service.
-- `systemctl stop nginx` — stop the Nginx service.
-- `systemctl start nginx` — start the Nginx service.
-- `systemctl restart nginx` — restart the Nginx service. Recommended after making configuration changes.
-- `sudo systemctl restart nginx` — the safer approach to restart the Nginx service.
-- `sudo systemctl reload nginx` — reload the configuration without bringing the server down.
-- `sudo systemctl enable nginx` — automatically start the service on boot/login.
-- `sudo systemctl disable nginx` — automatically disable the service on boot/login.
+> [!WARNING]
+> `kill -9` should be a last resort. It force-stops without graceful cleanup.
 
 ## Environment Variables, PATH and Bashrc
 
-- `echo $HOME` — print the value of the `HOME` environment variable (referenced with `$`).
-- `printenv` or `env` — display all environment variables in the terminal.
+| Command | Purpose |
+|---|---|
+| `echo $HOME` | Show HOME variable |
+| `printenv` / `env` | List environment variables |
+| `echo $PATH` | Show executable search paths |
+| `which ls` | Show command binary path |
+| `export NAME=value` | Export environment variable |
+| `export PATH="$PATH:/new/path"` | Append directory to PATH |
+| `vim .bashrc` | Edit shell startup file |
+| `source .bashrc` | Reload .bashrc now |
 
-One of the most important variables is `PATH`.
+Example:
 
-- To access any environment variable: `echo $[variable-name]`
-- You can also create your own shell variable:
-  ```
-  name="Zeeshan"
-  echo $name
-  ```
-- `export [variable-name]="[value]"` — turn a shell variable into an environment variable, e.g.:
-  ```
-  export friend="value"
-  echo $friend
-  ```
-- Environment variables are used to configure applications.
-- `echo $PATH` — display the value of `PATH`: a colon-separated list of directories containing binaries that can be run without specifying their full path.
-- `ls` — displays its result.
-- `which ls` — displays the path from which the `ls` command is being executed.
-- `vim zeeshan.sh` — create a bash file named "zeeshan."
-  - Bash is a shell that executes commands line by line, also known as "bash scripting."
-  - Bash scripting includes constructs like `IF`, `ELSE`, and `FOR` loops, similar to a programming language.
-- `chmod +x [bash-file-name]` — make a bash file executable.
-- `./[bash-file-name]` — execute a bash file.
-- `mv [file-name] [filepath]` — move a file to the given path.
-  - If `mv` doesn't work, try `sudo mv [file-name] [filepath]`.
-- `export PATH="$PATH:[filepath]"` — append a filepath to the end of the `PATH` variable, keeping all previous paths intact.
-  - Now you can run `[filename].sh` directly, without `./` at the start.
-  - This change won't persist after logging out and back in — add it to your `.bashrc` file to make it permanent.
-- `vim .bashrc` — create/edit the `.bashrc` file.
-- `source .bashrc` — reload the `.bashrc` file.
+```bash
+name="Zeeshan"
+echo $name
+export friend="value"
+echo $friend
+```
+
+Simple script flow:
+
+```bash
+vim hello.sh
+chmod +x hello.sh
+./hello.sh
+```
 
 ## Archives and Compression
 
-- **Archiving** means combining multiple files into a single container file, similar to creating a zip file.
-- **Compression** means reducing file size.
+- **Archive**: bundle files together
+- **Compression**: reduce size
 
-Commands:
-- `tar -cf [tar-name] [folder-name]` — create a tar file from the given folder.
-- `rm -rf [folder-name]` — remove an entire folder, its subfolders, and contents.
-  - `rm -rf` can permanently delete files and directories — use it carefully.
-- `tar -tf [tar-name]` — preview the contents of a tar file.
-- `tar -xf [tar-name]` — extract a tar file.
-- `tar -xvf [tar-name]` — extract a tar file while showing each file as it's extracted.
-- `gzip [tar-name]` — compress a tar file.
-- `gunzip [tar-name].gz` — decompress a tar file.
+| Command | Purpose |
+|---|---|
+| `tar -cf archive.tar folder/` | Create tar archive |
+| `tar -tf archive.tar` | List tar contents |
+| `tar -xf archive.tar` | Extract tar |
+| `tar -xvf archive.tar` | Extract tar verbosely |
+| `gzip archive.tar` | Compress tar to `.gz` |
+| `gunzip archive.tar.gz` | Decompress `.gz` |
+| `zip -r name.zip folder/` | Create zip archive |
+| `unzip name.zip` | Extract zip |
+| `rm -rf folder/` | Recursively delete directory |
 
-> If these commands aren't preinstalled, run: `sudo apt install gzip gunzip tar zip unzip`
+> [!CAUTION]
+> `rm -rf` permanently deletes data. Verify the path before running it.
 
-- The `zip` command can both archive and compress in the Linux terminal, and is also usable on Windows and Mac.
-- `zip -r [name.zip] [folder-name]` — zip a folder.
-- `unzip [filename]` — unzip a zip file.
+If tools are missing:
+
+```bash
+sudo apt update
+sudo apt install gzip tar zip unzip
+```
 
 ## Cronjobs
 
-Cron is a background service that runs tasks on a scheduled interval. A specific scheduled task is called a cronjob.
+Cron schedules recurring tasks.
 
-- `crontab -l` — check if a task is scheduled.
-- `sudo systemctl status cron` — check if the cron service is running.
-- `sudo systemctl start cron` — start the cron service if it isn't running.
-- `sudo systemctl restart cron` — restart the cron service.
-- `sudo systemctl stop cron` — stop the cron service (not recommended).
-- `crontab -e` — schedule a new task.
-
-A crontab has five fields:
-
-| Field | Range |
+| Command | Purpose |
 |---|---|
-| Minute | 0–59 |
-| Hour | 0–23 |
-| Day of Month | 1–31 |
-| Month | 1–12 |
-| Day of Week | 0–6 (0 = Sunday) |
+| `crontab -l` | List current cron jobs |
+| `crontab -e` | Edit cron jobs |
+| `sudo systemctl status cron` | Check cron service |
+| `sudo systemctl start cron` | Start cron service |
+| `sudo systemctl restart cron` | Restart cron service |
+| `sudo systemctl stop cron` | Stop cron service |
 
-[crontab.guru](https://crontab.guru) is a great website for learning and practicing cron schedules.
+Cron fields:
 
-## Understanding the Linux Filesystem
+| Field | Allowed values | Notes |
+|---|---|---|
+| Minute | `0-59` | Minute of the hour |
+| Hour | `0-23` | 24-hour format |
+| Day of Month | `1-31` | Calendar day |
+| Month | `1-12` or `JAN-DEC` | Month |
+| Day of Week | `0-7` or `SUN-SAT` | `0` and `7` = Sunday |
 
-- `/` — the root of your Linux machine; the outermost directory you can't go back beyond. (It also contains the root user's own home folder.)
-- `home` — the directory containing all user home folders. Use `cd ~` to go to your home directory.
-- `etc` — contains configuration files. Use `tail /etc/hosts` to check IP mappings.
-- `var` — contains variable files that change frequently.
-- `usr` — stands for "Unix System Resources"; contains a large number of software packages, commands, and libraries.
-- `tmp` — contains temporary files.
+Example cron entry (runs daily at 02:30):
+
+```bash
+30 2 * * * /home/user/backup.sh
+```
+
+Helpful reference: [crontab.guru](https://crontab.guru)
+
+## Understanding Linux Filesystem
+
+Common directories:
+
+| Path | Meaning |
+|---|---|
+| `/` | Filesystem root (top of directory tree) |
+| `/home` | User home directories |
+| `/etc` | System configuration files |
+| `/var` | Variable data (logs, spool, cache) |
+| `/usr` | Userland programs and libraries |
+| `/tmp` | Temporary files |
+
+Examples:
+
+```bash
+cd ~
+cd /
+cd ..
+ls /etc
+```
 
 ## Understanding Nginx
 
-Nginx is used to host multiple sites on the same server.
+Nginx is a high-performance web server and reverse proxy.
 
-- `sudo apt update` — update your package directory.
-- `sudo apt install nginx` — install Nginx on your machine.
-- `cd /var/www` — navigate to where your website's code is stored.
-- `sudo ufw status` — check the status of the firewall.
-  - UFW (Uncomplicated Firewall) is a user-friendly tool for managing firewall rules in Linux.
-- `sudo vim [filename]` — make changes to a file inside the HTML folder.
+| Command | Purpose |
+|---|---|
+| `sudo apt update` | Refresh packages |
+| `sudo apt install nginx` | Install Nginx |
+| `systemctl status nginx` | Check service status |
+| `sudo systemctl restart nginx` | Restart after config changes |
+| `sudo systemctl reload nginx` | Reload safely |
+| `cd /var/www` | Typical web root location |
+| `sudo ufw status` | Check firewall state |
 
-Read the Nginx docs to dive deeper — it's quite time-consuming to learn all of Nginx.
+> [!SECURITY]
+> Review firewall and server config changes carefully. Misconfiguration can expose services publicly.
 
 ## Using FileZilla to Transfer Files
 
-FileZilla is a free tool used to transfer files between a server and a client (e.g., Windows to Linux or Linux to Windows).
+FileZilla helps transfer files between local and remote systems (typically over SFTP).
 
-> *(Step-by-step configuration guide to be added.)*
+Basic flow:
+
+1. Install FileZilla client
+2. Open Site Manager
+3. Set host, username, and port (usually `22` for SFTP)
+4. Connect and transfer files
+
+> [!IMPORTANT]
+> 🚧 **Work in progress:** detailed FileZilla step-by-step screenshots and configuration walkthrough are still being added.
 
 ## Conclusion
 
-You should learn at least the basics of Linux in 2026 — whether you're aiming to become an AI Engineer, ML Engineer, Web Developer, DevOps Engineer, or any other tech role.
+Great progress—if you complete these 18 topics with hands-on practice, you will have a strong Linux foundation.
+
+### Suggested next steps
+
+- Bash scripting projects
+- Git + GitHub workflows
+- SSH and Linux networking basics
+- Docker and container basics
+- Nginx site and reverse proxy configuration
+- Linux hardening and monitoring fundamentals
+
+If this tutorial helped you, consider giving this repository a ⭐.
