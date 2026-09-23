@@ -788,27 +788,265 @@ history
 
 ---
 
+
 ## Creating Users
 
-| Command | Purpose |
-|---|---|
-| `whoami` | Show current user |
-| `sudo adduser <username>` | Create user (Ubuntu) |
-| `su - <username>` | Switch to that user login shell |
-| `exit` | Return to previous shell |
-| `sudo usermod -aG sudo <username>` | Grant sudo access |
+Linux is a **multi-user operating system**, meaning multiple users can have separate accounts, home directories, files, and permissions.
 
-> [!WARNING]
-> `sudo` runs commands with elevated privileges. Double-check every command before pressing Enter.
+### 1. Check the Current User
 
-### Practice exercise
+The `whoami` command displays the username of the currently logged-in user.
+
+**Syntax & Example:**
 
 ```bash
-sudo adduser learner1
-su - learner1
 whoami
+```
+
+**Example Output:**
+
+```text
+zeeshan
+```
+
+To view additional information about your account:
+
+```bash
+id
+```
+
+This displays your **User ID (UID)**, **Group ID (GID)**, and group memberships.
+
+### 2. Create a New User
+
+The `adduser` command creates a new user account in Ubuntu.
+
+**Syntax:**
+
+```bash
+sudo adduser <username>
+```
+
+**Example:**
+
+```bash
+sudo adduser john
+```
+
+Linux will ask you to set a password and optionally provide additional user information.
+
+A home directory is also created:
+
+```text
+/home/john
+```
+
+> **Note:** `sudo` allows an authorized user to execute commands with elevated privileges, usually as root.
+
+### 3. Switch Between Users
+
+The `su` command allows you to switch to another user account.
+
+**Syntax:**
+
+```bash
+su - <username>
+```
+
+**Example:**
+
+```bash
+su - john
+```
+
+The `-` starts a login shell, loading John's environment and taking you to his home directory.
+
+Verify the current user and directory:
+
+```bash
+whoami
+pwd
+```
+
+**Expected Output:**
+
+```text
+john
+/home/john
+```
+
+To return to your previous shell:
+
+```bash
 exit
 ```
+
+### 4. View User Information
+
+Use `id` to display information about a specific user.
+
+**Syntax:**
+
+```bash
+id <username>
+```
+
+**Example:**
+
+```bash
+id john
+```
+
+**Example Output:**
+
+```text
+uid=1001(john) gid=1001(john) groups=1001(john)
+```
+
+| Field | Meaning |
+|-------|---------|
+| UID | User ID that uniquely identifies the user. |
+| GID | Primary Group ID associated with the user. |
+| groups | Groups the user belongs to. |
+
+### 5. Give a User Sudo Access
+
+By default, a newly created standard user does not necessarily have administrative privileges.
+
+On Ubuntu, you can add an authorized user to the `sudo` group to grant administrative access.
+
+**Syntax:**
+
+```bash
+sudo usermod -aG sudo <username>
+```
+
+**Example:**
+
+```bash
+sudo usermod -aG sudo john
+```
+
+John can then execute administrative commands using `sudo`, for example:
+
+```bash
+sudo apt update
+```
+
+> [!IMPORTANT]
+> Adding a user to the `sudo` group grants significant administrative privileges. The user may need to log out and log back in before the new group membership takes effect.
+
+#### Understanding `usermod -aG`
+
+The command:
+
+```bash
+sudo usermod -aG sudo john
+```
+
+Can be broken down as follows:
+
+| Component | Purpose |
+|-----------|---------|
+| `sudo` | Execute with elevated privileges. |
+| `usermod` | Modify an existing user account. |
+| `-a` | Append to existing supplementary groups. |
+| `-G` | Specify supplementary groups. |
+| `sudo` | Group to which the user will be added. |
+| `john` | Username to modify. |
+
+**Why is `-aG` important?**
+
+Suppose John belongs to these groups:
+
+```text
+john developers docker
+```
+
+Using:
+
+```bash
+sudo usermod -G sudo john
+```
+
+Can replace his existing supplementary group memberships with `sudo`.
+
+Instead, use:
+
+```bash
+sudo usermod -aG sudo john
+```
+
+This adds John to the `sudo` group while preserving his existing supplementary groups.
+
+### 6. Change a User's Password
+
+The `passwd` command allows an administrator to set or change another user's password.
+
+**Syntax:**
+
+```bash
+sudo passwd <username>
+```
+
+**Example:**
+
+```bash
+sudo passwd john
+```
+
+Enter and confirm the new password when prompted.
+
+### 7. Check User Groups
+
+The `groups` command displays the groups associated with a user.
+
+**Syntax:**
+
+```bash
+groups <username>
+```
+
+**Example:**
+
+```bash
+groups john
+```
+
+**Example Output:**
+
+```text
+john : john sudo
+```
+
+This indicates that John belongs to the `john` and `sudo` groups.
+
+### 8. Delete a User
+
+The `userdel` command removes an existing user account.
+
+**Syntax:**
+
+```bash
+sudo userdel <username>
+```
+
+**Example:**
+
+```bash
+sudo userdel john
+```
+
+To remove the user along with their home directory and mail spool:
+
+```bash
+sudo userdel -r john
+```
+
+> [!CAUTION]
+> The `-r` option deletes the user's home directory and its contents. Back up important data before using this command. Files owned by the user outside their home directory may remain on the system.
+
+---
 
 ## Package Management
 
