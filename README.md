@@ -218,26 +218,78 @@ Most VPS providers also offer a browser-based terminal for accessing your server
 
 ---
 
-## Installing Linux through VirtualBox on Windows
+## Installing Linux Through VirtualBox on Windows
 
-1. Download VirtualBox from [virtualbox.org](https://www.virtualbox.org/wiki/Downloads) (`Windows hosts`)
-2. Download Ubuntu Desktop LTS ISO from [ubuntu.com](https://ubuntu.com/download/desktop)
-3. Create a new VM in VirtualBox
-4. Attach the Ubuntu ISO
-5. Set username/password during setup
-6. Allocate resources (recommended learning baseline):
-   - 4 GB RAM
-   - 2 CPU cores
-   - 35 GB storage
-7. Complete installation and open terminal
+### What is Virtualization?
 
-### Practice check
+**Virtualization** allows you to run another operating system inside your existing computer without replacing Windows.
+
+Using VirtualBox, you can create a **Virtual Machine (VM)** to run Ubuntu Linux independently.
+
+- **Host OS:** Your original operating system (Windows).
+- **Guest OS:** The operating system running inside VirtualBox (Ubuntu Linux).
+
+### Step 1: Install VirtualBox
+
+1. Visit the official [VirtualBox Downloads](https://www.virtualbox.org/wiki/Downloads) page.
+2. Download VirtualBox for **Windows hosts**.
+3. Run the installer and follow the installation instructions.
+4. Complete the installation and launch VirtualBox.
+
+### Step 2: Download Ubuntu
+
+1. Visit the official [Ubuntu Desktop Download](https://ubuntu.com/download/desktop) page.
+2. Select an Ubuntu **LTS (Long Term Support)** release.
+3. Download the AMD64 (Intel/AMD 64-bit) ISO file.
+
+> **Note:** The ISO file contains the Ubuntu operating system required to install Linux inside your virtual machine.
+
+### Step 3: Create a Virtual Machine
+
+1. Open VirtualBox and click **New**.
+2. Enter a name for your VM, such as \`Ubuntu\`.
+3. Select the downloaded Ubuntu ISO file.
+4. Set your username and password.
+5. Allocate the following resources according to your computer's available hardware:
+
+| Resource | Recommended Allocation |
+|----------|------------------------|
+| RAM | 4 GB (or 50% of your Memory) |
+| CPU | 2 Cores (or 50% of your CPU) |
+| Storage | 35 GB minimum; allocate more if available |
+| Operating System | Ubuntu LTS (64-bit) |
+
+6. Complete the VM configuration and click **Finish**.
+7. Start your virtual machine and complete the Ubuntu installation.
+
+> **Important:** Do not allocate all your computer's RAM or CPU cores to the VM. Windows needs enough resources to continue running smoothly.
+
+### Step 4: Open the Linux Terminal
+
+Once Ubuntu starts, log in with your username and password.
+
+Open the terminal using:
+
+```text
+Ctrl + Alt + T
+```
+
+Alternatively, search for **Terminal** in Ubuntu's Activities menu.
+
+### Step 5: Verify Your Linux Installation
+
+Run these commands inside the Ubuntu terminal:
 
 ```bash
-pwd
-whoami
-ls
+uname -a             # Display kernel and system information
+cat /etc/os-release  # Identify your Linux distribution
+ls                   # List files and directories
+ls -l                # Display detailed file information
+ls -la               # Include hidden files and directories
 ```
+
+> **Remember:** Windows Terminal runs commands on your Windows host, while the Ubuntu terminal runs commands inside your Linux virtual machine. Use the Ubuntu terminal throughout this handbook.
+
 
 ## Installing Linux on Windows using WSL
 
