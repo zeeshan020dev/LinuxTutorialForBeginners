@@ -48,11 +48,57 @@ Follow this exact sequence:
 
 ## What is Linux?
 
-Linux is an open-source operating system kernel. In simple terms, it is the core software layer that connects your hardware with the software you run.
+**Linux is a free and open-source operating system kernel** that manages a computer's hardware and allows software to interact with it.
 
-- **Open source** means the code is publicly available
-- Anyone can study, improve, and distribute Linux-based systems
-- Popular Linux distributions include Ubuntu, Debian, Fedora, and Arch
+The kernel is the core component of an operating system. It manages essential resources such as the CPU, memory, storage, and running processes.
+
+### How Linux Works
+
+```text
+User → Applications / Shell → Linux Kernel → Hardware
+```
+
+| Component | Purpose |
+|-----------|---------|
+| Hardware | Physical components such as CPU, RAM, and storage. |
+| Kernel | Manages hardware resources and communication with software. |
+| Shell | Allows users to interact with the operating system through commands. |
+| Applications | Programs that perform tasks for users. |
+
+### What Does the Linux Kernel Manage?
+
+| Resource | Responsibility |
+|----------|----------------|
+| CPU | Schedules processes and allocates processing time. |
+| Memory | Manages RAM allocation between programs. |
+| Storage | Supports filesystem operations and access to storage devices. |
+| Processes | Creates, schedules, and terminates running programs. |
+| Permissions | Enforces access controls for users and processes. |
+
+### Linux Kernel vs. Linux Distribution
+
+Technically, **Linux refers to the kernel**, not the complete operating system.
+
+A **Linux distribution (distro)** combines the Linux kernel with system utilities, a package manager, and other software to provide a usable operating system.
+
+Popular Linux distributions include Ubuntu, Debian, Fedora, Arch Linux, and Kali Linux.
+
+> **Example:** Ubuntu is a complete operating system built around the Linux kernel.
+
+### Check Your Linux System
+
+Run these commands in your Linux terminal:
+
+```bash
+uname -s              # Display the kernel name
+uname -r              # Display the kernel release
+uname -a              # Display detailed system information
+cat /etc/os-release   # Identify your Linux distribution
+```
+
+### Why Learn Linux?
+
+Linux is widely used in servers, cloud computing, cybersecurity, DevOps, software development, and Android devices. Learning Linux helps you understand how modern computing infrastructure works and how to manage systems through the command line.
 
 ## History of Linux
 
