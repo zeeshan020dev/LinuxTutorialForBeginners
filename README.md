@@ -350,10 +350,10 @@ Run these commands in Windows PowerShell:
 
 | Command | Purpose |
 |---------|---------|
-| \`wsl --list --online\` | List available Linux distributions. |
-| \`wsl --list --verbose\` | Display installed distributions and their WSL versions. |
-| \`wsl -d Ubuntu\` | Launch Ubuntu. |
-| \`wsl --shutdown\` | Shut down all running WSL distributions. |
+| `wsl --list --online` | List available Linux distributions. |
+| `wsl --list --verbose` | Display installed distributions and their WSL versions. |
+| `wsl -d Ubuntu` | Launch Ubuntu. |
+| `wsl --shutdown` | Shut down all running WSL distributions. |
 
 ### Access Windows Files from Linux
 
