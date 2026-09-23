@@ -370,12 +370,73 @@ ls
 
 ---
 
-## Installing Linux through VirtualBox on Mac
+## Installing Linux Through VirtualBox on Mac
 
-Install VirtualBox for macOS, download Ubuntu ISO, and create a VM using a similar flow to Windows (adjusting host-specific permissions/settings).
+### What is VirtualBox on Mac?
 
-> [!IMPORTANT]
-> 🚧 **Work in progress:** detailed step-by-step macOS VirtualBox instructions are still being added.
+**VirtualBox** allows you to run Ubuntu Linux inside macOS as a virtual machine without replacing your existing operating system.
+
+- **Host OS:** macOS (your original operating system).
+- **Guest OS:** Ubuntu Linux (running inside VirtualBox).
+
+### Step 1: Install VirtualBox
+
+1. Visit the official [VirtualBox Downloads](https://www.virtualbox.org/wiki/Downloads) page.
+2. Download VirtualBox for your supported macOS system.
+3. Follow the installation instructions and launch VirtualBox.
+
+### Step 2: Download Ubuntu
+
+Visit the official [Ubuntu Downloads](https://ubuntu.com/download/desktop) page and download an Ubuntu LTS ISO compatible with your Mac's processor.
+
+| Mac Processor | Ubuntu Architecture |
+|---------------|---------------------|
+| Intel Mac | AMD64 (x86-64) |
+| Apple Silicon (M1/M2/M3/M4, etc.) | ARM64 (aarch64) |
+
+> **Important:** Ensure that your VirtualBox version supports your Mac's processor and the selected Ubuntu guest architecture.
+
+### Step 3: Create an Ubuntu Virtual Machine
+
+1. Open VirtualBox and click **New**.
+2. Name your virtual machine, such as `Ubuntu`.
+3. Select the downloaded Ubuntu ISO file.
+4. Configure your username and password.
+5. Allocate RAM, CPU cores, and storage according to your Mac's available resources.
+6. Click **Finish** and start the virtual machine.
+7. Complete the Ubuntu installation and log in.
+
+> **Note:** Leave sufficient RAM and CPU resources for macOS to run smoothly.
+
+### Step 4: Open the Ubuntu Terminal
+
+Once Ubuntu starts, open the terminal using:
+
+```text
+Ctrl + Alt + T
+```
+
+Alternatively, open **Activities → Terminal** inside Ubuntu.
+
+### Step 5: Verify Your Linux Installation
+
+Run these commands inside the Ubuntu terminal:
+
+```bash
+uname -m             # Display CPU architecture
+uname -a             # Display kernel and system information
+cat /etc/os-release  # Identify your Linux distribution
+ls -la               # List files, including hidden files
+```
+
+The `uname -m` command typically returns:
+
+- `x86_64` for Intel/AMD 64-bit Linux.
+- `aarch64` for ARM64 Linux.
+
+> **Remember:** The macOS Terminal runs commands on your Mac, while the Ubuntu terminal runs commands inside your Linux virtual machine. Use the Ubuntu terminal throughout this handbook.
+
+---
 
 ## Basic Linux Commands
 
