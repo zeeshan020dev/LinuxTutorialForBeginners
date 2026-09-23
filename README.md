@@ -440,54 +440,353 @@ The `uname -m` command typically returns:
 
 ## Basic Linux Commands
 
-### Navigation
+Linux commands allow you to navigate directories, create and manage files, edit content, and interact with your operating system through the terminal.
 
-| Command | Purpose |
-|---|---|
-| `pwd` | Show current working directory |
-| `ls` | List files and directories |
-| `cd <dir>` | Move into a directory |
-| `cd ..` | Move to parent directory |
-| `cd ~` | Move to your home directory |
-| `cd /` | Move to filesystem root (`/`) |
-| `cd .` | Refer to current directory |
+### 1. Navigation Commands
+
+#### `pwd` — Print Working Directory
+
+Displays the full path of your current directory.
+
+**Syntax:**
+```bash
+pwd
+```
+
+**Example Output:**
+```text
+/home/zeeshan
+```
+
+#### `cd` — Change Directory
+
+Allows you to navigate between directories in the Linux filesystem.
+
+| Command | Purpose | Example |
+|---------|---------|---------|
+| `cd <directory>` | Move into a specific directory. | `cd Documents` |
+| `cd ..` or `cd ../` | Move one directory up. | `cd ..` |
+| `cd ../..` | Move two directories up. | `cd ../..` |
+| `cd ../<directory>` | Move into another directory inside the parent directory. | `cd ../Downloads` |
+| `cd ~` | Navigate to your home directory. | `cd ~` |
+| `cd /` | Navigate to the filesystem root. | `cd /` |
+| `cd .` | Stay in the current directory. | `cd .` |
+| `cd` | Return to your home directory. | `cd` |
+
+**Understanding Directory Shortcuts**
+
+```text
+/       → Filesystem root
+~       → Current user's home directory
+.       → Current directory
+..      → Parent directory
+../..   → Two directories up
+```
+
+For example, suppose your current directory is:
+
+```text
+/home/zeeshan/projects
+```
+
+Running:
+
+```bash
+cd ..
+```
+
+Takes you to:
+
+```text
+/home/zeeshan
+```
+
+Running it again takes you to:
+
+```text
+/home
+```
 
 > [!NOTE]
-> `/` is the top-level filesystem root. `~` is your current user's home directory.
+> `/` represents the filesystem root, while `~` represents the current user's home directory. They are not the same location.
 
-### Files and editing
+#### `ls` — List Files and Directories
+
+Displays the files and directories available inside a directory.
+
+**Syntax:**
+```bash
+ls
+```
+
+**Useful Examples:**
 
 | Command | Purpose |
-|---|---|
-| `mkdir project` | Create directory |
-| `mkdir -p a/b/c` | Create nested directories |
-| `touch notes.txt` | Create empty file |
-| `vim notes.txt` | Edit file in Vim |
-| `cp src.txt dst.txt` | Copy file |
-| `mv file.txt /path/` | Move file |
-| `cat file.txt` | Print file content |
-| `cat -n file.txt` | Print content with line numbers |
-| `less file.txt` | View large file interactively |
-| `clear` | Clear terminal screen |
-| `history` | Show command history |
+|---------|---------|
+| `ls` | List files and directories in the current directory. |
+| `ls -l` | Display detailed file information. |
+| `ls -la` | Include hidden files and directories. |
+| `ls .` | List the contents of the current directory. |
+| `ls ~` | List the contents of your home directory. |
 
-If Vim is missing:
+> **Tip:** Press `Tab` while typing a file or directory name to autocomplete it when possible.
+
+---
+
+### 2. Creating and Managing Files
+
+#### `mkdir` — Make Directory
+
+Creates a new directory in the Linux filesystem.
+
+**Syntax:**
+```bash
+mkdir <directory-name>
+```
+
+**Example:**
+```bash
+mkdir projects
+```
+
+To create multiple nested directories:
+
+```bash
+mkdir -p folder1/folder2/folder3
+```
+
+The `-p` option creates missing parent directories automatically.
+
+#### `touch` — Create an Empty File
+
+Creates a new empty file if it does not already exist.
+
+**Syntax:**
+```bash
+touch <filename>
+```
+
+**Example:**
+```bash
+touch notes.txt
+```
+
+> **Note:** If the file already exists, `touch` updates its timestamps without deleting its contents.
+
+#### `cp` — Copy Files
+
+Copies a file from one location to another.
+
+**Syntax:**
+```bash
+cp <source> <destination>
+```
+
+**Example:**
+```bash
+cp notes.txt backup.txt
+```
+
+This creates a copy of `notes.txt` named `backup.txt`.
+
+> [!IMPORTANT]
+> Copying to an existing destination file may overwrite its contents.
+
+---
+
+### 3. Editing Files with Vim
+
+#### `vim` — Text Editor
+
+Vim is a terminal-based text editor used to create and modify files directly inside Linux.
+
+**Syntax:**
+```bash
+vim <filename>
+```
+
+**Example:**
+```bash
+vim notes.txt
+```
+
+**If Vim is not installed:**
 
 ```bash
 sudo apt update
 sudo apt install vim
 ```
 
-### Practice exercise
+After installation, open your file again:
 
 ```bash
-mkdir linux-practice
-cd linux-practice
-touch notes.txt
-echo "My first Linux note" > notes.txt
-cat -n notes.txt
-cd ..
+vim notes.txt
 ```
+
+**How to Edit a File Using Vim**
+
+1. Press `i` to enter Insert Mode.
+2. Type or modify your content.
+3. Press `Esc` to return to Normal Mode.
+4. Type `:wq` and press `Enter` to save and exit.
+
+| Vim Command | Purpose |
+|-------------|---------|
+| `i` | Enter Insert Mode. |
+| `Esc` | Return to Normal Mode. |
+| `:w` | Save the file. |
+| `:q` | Exit if there are no unsaved changes. |
+| `:wq` | Save and exit. |
+| `:q!` | Exit without saving changes. |
+
+---
+
+### 4. Reading Files with `cat`
+
+#### `cat` — Concatenate
+
+The `cat` command is commonly used to display the contents of a file directly in the terminal.
+
+**Syntax:**
+```bash
+cat <filename>
+```
+
+**Example:**
+```bash
+cat hello.txt
+```
+
+**Example Output:**
+```text
+Hello Linux!
+Welcome to my first Linux file.
+```
+
+**Useful cat Commands**
+
+| Command | Purpose |
+|---------|---------|
+| `cat file.txt` | Display the contents of a file. |
+| `cat file1.txt file2.txt` | Display multiple files consecutively. |
+| `cat -n file.txt` | Display file contents with line numbers. |
+| `cat > file.txt` | Create or overwrite a file using terminal input. |
+| `cat >> file.txt` | Append content to the end of a file. |
+
+**Example: Display File Content with Line Numbers**
+
+```bash
+cat -n hello.txt
+```
+
+**Output:**
+```text
+     1  Hello Linux!
+     2  Welcome to my first Linux file.
+```
+
+**Example: Create a File Using cat**
+
+```bash
+cat > hello.txt
+```
+
+Enter your content:
+
+```text
+Hello Linux!
+This is my first file.
+```
+
+Press `Ctrl + D` to finish writing and return to the terminal.
+
+**Example: Append Content to an Existing File**
+
+```bash
+cat >> hello.txt
+```
+
+Type additional content and press `Ctrl + D` when finished.
+
+> [!WARNING]
+> `cat > file.txt` overwrites existing content, while `cat >> file.txt` appends content without removing what is already there.
+
+---
+
+### 5. Reading Large Files with `less`
+
+#### `less` — Interactive File Viewer
+
+The `less` command allows you to read, scroll through, and search large files without printing everything into the terminal at once.
+
+**Syntax:**
+```bash
+less <filename>
+```
+
+**Example:**
+```bash
+less hello.txt
+```
+
+**Navigation Inside less**
+
+| Key | Purpose |
+|-----|---------|
+| ↑ / ↓ | Move one line up or down. |
+| `Space` | Move one page down. |
+| `b` | Move one page up. |
+| `Enter` | Move one line down. |
+| `g` | Go to the beginning of the file. |
+| `G` | Go to the end of the file. |
+| `/word` | Search for a specific word. |
+| `n` | Jump to the next search result. |
+| `q` | Quit and return to the terminal. |
+
+**Example: Searching Inside a File**
+
+Open a file:
+
+```bash
+less hello.txt
+```
+
+Type `/Linux` and press `Enter` to search for the word `Linux`.
+
+Press `n` to navigate to the next matching result.
+
+**cat vs. less**
+
+| Command | Best Used For |
+|---------|---------------|
+| `cat` | Quickly displaying small files. |
+| `less` | Reading and searching large files interactively. |
+
+---
+
+### 6. Terminal Utility Commands
+
+#### `clear` — Clear Terminal Screen
+
+Clears the visible terminal screen.
+
+**Syntax & Example:**
+```bash
+clear
+```
+
+#### `history` — Command History
+
+Displays previously executed commands in your terminal session's available history.
+
+**Syntax & Example:**
+```bash
+history
+```
+
+> **Tip:** Use the ↑ and ↓ arrow keys to navigate through previous commands instead of typing long commands repeatedly.
+
+---
 
 ## Creating Users
 
