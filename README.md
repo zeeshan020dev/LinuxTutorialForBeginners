@@ -1288,26 +1288,6 @@ Ubuntu and Debian provide both `apt` and `apt-get` for package management.
 
 Both remain supported. This handbook uses `apt` for beginner-friendly examples.
 
-### Quick Command Reference
-
-| Command | Purpose |
-|---------|---------|
-| `sudo apt update` | Refresh package information. |
-| `sudo apt upgrade` | Upgrade installed packages. |
-| `sudo apt update && sudo apt upgrade` | Refresh package information, then upgrade if successful. |
-| `sudo apt full-upgrade` | Upgrade packages with additional dependency changes. |
-| `apt search nginx` | Search for Nginx. |
-| `apt show nginx` | Display Nginx package information. |
-| `sudo apt install nginx` | Install Nginx. |
-| `sudo apt install git curl wget` | Install multiple packages. |
-| `sudo apt remove nginx` | Remove Nginx. |
-| `sudo apt purge nginx` | Remove Nginx and its package-managed configuration. |
-| `apt list --installed` | List installed packages. |
-| `apt list --installed \| grep nginx` | Find Nginx in the installed package list. |
-| `apt policy nginx` | Display installed and available Nginx versions. |
-| `sudo apt autoremove` | Remove unnecessary dependencies. |
-| `sudo apt clean` | Clear downloaded package files. |
-
 ---
 
 ## Groups & Permissions
