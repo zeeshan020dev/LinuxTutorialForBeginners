@@ -290,20 +290,85 @@ ls -la               # Include hidden files and directories
 
 > **Remember:** Windows Terminal runs commands on your Windows host, while the Ubuntu terminal runs commands inside your Linux virtual machine. Use the Ubuntu terminal throughout this handbook.
 
+---
 
-## Installing Linux on Windows using WSL
+## Installing Linux on Windows Using WSL
 
-Quick start:
+### What is WSL?
 
-```bash
+**WSL (Windows Subsystem for Linux)** allows you to run Linux directly inside Windows without installing a separate operating system or creating a virtual machine using VirtualBox.
+
+WSL is ideal for beginners who want to practice Linux commands, Bash scripting, and development through the terminal.
+
+### Step 1: Install WSL
+
+1. Open **Windows PowerShell as Administrator**.
+2. Run the following command:
+
+```powershell
 wsl --install
+```
+
+This installs WSL along with the default Linux distribution, typically Ubuntu.
+
+To view available Linux distributions:
+
+```powershell
 wsl --list --online
 ```
 
-Then install Ubuntu from the list (or Microsoft Store).
+To install Ubuntu explicitly:
 
-> [!IMPORTANT]
-> 🚧 **Work in progress:** detailed step-by-step WSL setup is still being expanded in this tutorial.
+```powershell
+wsl --install -d Ubuntu
+```
+
+> **Note:** You do not need to run both installation commands. Use \`wsl --install -d Ubuntu\` when you specifically want Ubuntu. Restart Windows if prompted.
+
+### Step 2: Configure Ubuntu
+
+1. Open **Ubuntu** from the Windows Start menu.
+2. Wait for the initial installation to complete.
+3. Create your Linux username and password.
+4. Once configured, the Ubuntu terminal will be ready to use.
+
+> **Important:** Your Linux username and password are separate from your Windows login credentials.
+
+### Step 3: Verify Your Linux Installation
+
+Run these commands inside the Ubuntu terminal:
+
+```bash
+uname -a             # Display kernel and system information
+cat /etc/os-release  # Identify your Linux distribution
+ls -la               # List files, including hidden files
+```
+
+### Useful WSL Commands
+
+Run these commands in Windows PowerShell:
+
+| Command | Purpose |
+|---------|---------|
+| \`wsl --list --online\` | List available Linux distributions. |
+| \`wsl --list --verbose\` | Display installed distributions and their WSL versions. |
+| \`wsl -d Ubuntu\` | Launch Ubuntu. |
+| \`wsl --shutdown\` | Shut down all running WSL distributions. |
+
+### Access Windows Files from Linux
+
+Windows drives are accessible inside WSL through the `mnt` directory.
+
+For example, to access your Windows C drive:
+
+```bash
+cd /mnt/c
+ls
+```
+
+> **Remember:** WSL runs Linux locally on your Windows computer. It is not a cloud VPS or a publicly accessible Linux server by default.
+
+---
 
 ## Installing Linux through VirtualBox on Mac
 
