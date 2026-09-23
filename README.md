@@ -146,19 +146,77 @@ Linux Kernel + GNU Tools + System Software
 
 ---
 
-## Getting an online Linux Server
 
-You can practice Linux on a cloud VPS (Virtual Private Server).
+## Getting an Online Linux Server
 
-Typical beginner path:
+### What is a VPS?
 
-1. Choose a VPS provider
-2. Select Ubuntu LTS image
-3. Start with a small plan (for learning)
-4. Connect via SSH and begin command practice
+A **VPS (Virtual Private Server)** is a virtual machine hosted in the cloud that you can access remotely through the internet.
 
-> [!NOTE]
-> The original learning path recommends choosing an Ubuntu LTS server plan for stability.
+It allows you to practice Linux, deploy websites, run applications, and automate tasks without installing Linux on your personal computer.
+
+### Step 1: Choose a VPS Provider
+
+For this tutorial, we will use [Hostinger](https://www.hostinger.com/) as an example.
+
+1. Visit Hostinger and select a suitable VPS hosting plan.
+2. Choose **Ubuntu LTS (Long Term Support)** as your operating system.
+3. Complete the purchase and configure your VPS.
+4. Set a strong root password and store it securely.
+5. Wait for the VPS installation to complete.
+
+> **Note:** You can use any VPS provider that supports Linux. A small VPS is sufficient for practicing basic Linux commands.
+
+### Step 2: Connect to Your VPS Using SSH
+
+**SSH (Secure Shell)** allows you to securely access and manage a remote Linux server through your terminal.
+
+Open PowerShell, Windows Terminal, or your macOS/Linux terminal and run:
+
+```bash
+ssh root@203.0.113.10
+```
+
+Replace \`203.0.113.10\` with your VPS's actual public IP address.
+
+Other SSH connection methods:
+
+```bash
+# Connect using a specific port
+ssh -p 22 root@203.0.113.10
+
+# Connect using an SSH private key
+ssh -i ~/.ssh/id_rsa root@203.0.113.10
+```
+
+On your first connection, SSH may ask you to verify the server's identity. Confirm that its fingerprint matches the one provided by your hosting provider before accepting it.
+
+Enter your root password when prompted. Your password will not appear on the screen while typing.
+
+> **Security Tip:** SSH key authentication is recommended for long-term server access. After initial setup, use a regular user with sudo privileges instead of working as root for everyday tasks.
+
+### Step 3: Verify Your Linux Server
+
+Once connected, run the following commands:
+
+```bash
+hostname             # Display the server's hostname
+uname -a             # Display kernel and system information
+cat /etc/os-release  # Identify your Linux distribution
+whoami               # Display the currently logged-in user
+```
+
+If the commands return your server information, you have successfully connected to your Linux VPS.
+
+> **Remember:** Commands executed through SSH run on your remote Linux server, not your personal computer. Your VPS continues running even after you close your terminal.
+
+### Troubleshooting
+
+If you cannot connect to your VPS, open your hosting provider's dashboard and verify the server status, IP address, SSH port, and login credentials.
+
+Most VPS providers also offer a browser-based terminal for accessing your server when SSH is unavailable.
+
+---
 
 ## Installing Linux through VirtualBox on Windows
 
