@@ -1050,20 +1050,265 @@ sudo userdel -r john
 
 ## Package Management
 
-Ubuntu uses APT (Advanced Package Tool).
+**Package Management** is the process of installing, updating, removing, and managing software on a Linux system.
+
+Ubuntu and Debian use **APT (Advanced Package Tool)** to manage software packages through configured repositories.
+
+### 1. Update Package Information
+
+The `apt update` command refreshes the list of available packages and their versions from configured software repositories.
+
+**Syntax & Example:**
+
+```bash
+sudo apt update
+```
+
+> **Note:** `apt update` only refreshes package information. It does not upgrade your installed software.
+
+### 2. Upgrade Installed Packages
+
+The `apt upgrade` command downloads and installs available updates for packages already installed on your system.
+
+**Syntax & Example:**
+
+```bash
+sudo apt upgrade
+```
+
+**Recommended Workflow:**
+
+```bash
+sudo apt update
+sudo apt upgrade
+```
+
+You can also combine both commands:
+
+```bash
+sudo apt update && sudo apt upgrade
+```
+
+The `&&` operator executes the second command only if the first command succeeds.
+
+**Understanding update vs. upgrade:**
 
 | Command | Purpose |
-|---|---|
-| `sudo apt update` | Refresh package index |
-| `sudo apt upgrade` | Upgrade installed packages |
-| `sudo apt install apache2` | Install Apache |
-| `sudo apt remove apache2` | Remove package |
-| `sudo apt purge apache2` | Remove package + config |
-| `sudo apt install nginx` | Install Nginx |
-| `sudo apt show nginx` | Show package details |
-| `sudo apt install curl git python3` | Install multiple packages |
-| `apt list --installed` | List installed packages |
-| `sudo apt-get update` | Legacy equivalent of apt update |
+|---------|---------|
+| `sudo apt update` | Check for available package updates. |
+| `sudo apt upgrade` | Download and install available updates. |
+
+> [!IMPORTANT]
+> Package upgrades can introduce compatibility issues. Back up important data before major upgrades, especially on production servers.
+
+### 3. Upgrade vs. Full Upgrade
+
+APT provides two methods for upgrading installed packages.
+
+| Command | Purpose |
+|---------|---------|
+| `sudo apt upgrade` | Upgrades packages without removing installed packages. |
+| `sudo apt full-upgrade` | Allows larger dependency changes, including removing packages when necessary. |
+
+**Examples:**
+
+```bash
+sudo apt upgrade
+sudo apt full-upgrade
+```
+
+> [!WARNING]
+> Review the proposed changes before confirming `full-upgrade`, as it may remove existing packages.
+
+### 4. Search for a Package
+
+The `apt search` command searches available software repositories for packages matching a keyword.
+
+**Syntax:**
+
+```bash
+apt search <package-name>
+```
+
+**Example:**
+
+```bash
+apt search nginx
+```
+
+### 5. View Package Information
+
+The `apt show` command displays details about a package, including its version, description, dependencies, and download size.
+
+**Syntax:**
+
+```bash
+apt show <package-name>
+```
+
+**Example:**
+
+```bash
+apt show nginx
+```
+
+### 6. Install Packages
+
+The `apt install` command downloads and installs software from configured repositories.
+
+**Syntax:**
+
+```bash
+sudo apt install <package-name>
+```
+
+**Example:**
+
+```bash
+sudo apt install nginx
+```
+
+You can also install multiple packages using a single command:
+
+```bash
+sudo apt install git curl wget
+```
+
+This installs Git, cURL, and Wget together.
+
+### 7. Remove or Purge Packages
+
+APT provides two common methods for uninstalling software.
+
+| Command | Purpose |
+|---------|---------|
+| `sudo apt remove nginx` | Remove Nginx while generally preserving its configuration files. |
+| `sudo apt purge nginx` | Remove Nginx and its package-managed configuration files. |
+
+**Examples:**
+
+```bash
+sudo apt remove nginx
+sudo apt purge nginx
+```
+
+> **Remember:** `remove` uninstalls the software, while `purge` also removes its package-managed configuration files.
+
+### 8. View Installed Packages
+
+The `apt list --installed` command displays packages currently installed on your system.
+
+**Syntax & Example:**
+
+```bash
+apt list --installed
+```
+
+To search for a specific package in the installed list:
+
+```bash
+apt list --installed | grep nginx
+```
+
+The `|` operator, called a **pipe**, sends the output of one command to another. Here, `grep` filters the list for packages containing `nginx`.
+
+### 9. Check Package Versions
+
+The `apt policy` command displays installed and available package versions along with their repository information.
+
+**Syntax:**
+
+```bash
+apt policy <package-name>
+```
+
+**Example:**
+
+```bash
+apt policy nginx
+```
+
+This is useful when troubleshooting package versions and update availability.
+
+### 10. Clean Unused Packages
+
+APT provides commands to remove unnecessary dependencies and downloaded package files.
+
+| Command | Purpose |
+|---------|---------|
+| `sudo apt autoremove` | Remove automatically installed dependencies that are no longer needed. |
+| `sudo apt clean` | Clear downloaded package files from the local APT cache. |
+
+**Examples:**
+
+```bash
+sudo apt autoremove
+sudo apt clean
+```
+
+> **Note:** Review the package list before confirming `autoremove` to avoid removing anything you still need.
+
+### 11. Understanding Software Repositories
+
+A **repository** is a configured source from which APT retrieves software packages and updates.
+
+When you run:
+
+```bash
+sudo apt install nginx
+```
+
+APT follows this general process:
+
+```text
+Software Repository
+        ↓
+APT Package Information
+        ↓
+Download Package
+        ↓
+Install Package
+```
+
+Ubuntu stores repository configuration in locations such as:
+
+```text
+/etc/apt/sources.list
+/etc/apt/sources.list.d/
+```
+
+### 12. APT vs. APT-GET
+
+Ubuntu and Debian provide both `apt` and `apt-get` for package management.
+
+| Tool | Purpose |
+|------|---------|
+| `apt` | User-friendly command-line interface for everyday package management. |
+| `apt-get` | Established package-management interface commonly used in scripts and automation. |
+
+Both remain supported. This handbook uses `apt` for beginner-friendly examples.
+
+### Quick Command Reference
+
+| Command | Purpose |
+|---------|---------|
+| `sudo apt update` | Refresh package information. |
+| `sudo apt upgrade` | Upgrade installed packages. |
+| `sudo apt update && sudo apt upgrade` | Refresh package information, then upgrade if successful. |
+| `sudo apt full-upgrade` | Upgrade packages with additional dependency changes. |
+| `apt search nginx` | Search for Nginx. |
+| `apt show nginx` | Display Nginx package information. |
+| `sudo apt install nginx` | Install Nginx. |
+| `sudo apt install git curl wget` | Install multiple packages. |
+| `sudo apt remove nginx` | Remove Nginx. |
+| `sudo apt purge nginx` | Remove Nginx and its package-managed configuration. |
+| `apt list --installed` | List installed packages. |
+| `apt list --installed \| grep nginx` | Find Nginx in the installed package list. |
+| `apt policy nginx` | Display installed and available Nginx versions. |
+| `sudo apt autoremove` | Remove unnecessary dependencies. |
+| `sudo apt clean` | Clear downloaded package files. |
+
+---
 
 ## Groups & Permissions
 
