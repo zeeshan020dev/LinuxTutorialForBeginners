@@ -1292,26 +1292,536 @@ Both remain supported. This handbook uses `apt` for beginner-friendly examples.
 
 ## Groups & Permissions
 
-| Command | Purpose |
-|---|---|
-| `sudo groupadd <group>` | Create group |
-| `sudo useradd -m <user>` | Create user with home directory |
-| `sudo passwd <user>` | Set user password |
-| `sudo usermod -aG <group> <user>` | Add user to group |
-| `groups <user>` | Show user groups |
-| `ls -l` | Show ownership + permission bits |
-| `sudo chown <user> <path>` | Change owner |
-| `sudo chgrp <group> <path>` | Change group |
-| `chmod g+w <path>` | Add group write permission |
-| `chmod <octal> <path>` | Set octal permissions |
+Linux uses **users, groups, ownership, and permissions** to control who can access files and directories.
 
-Permission math:
+For example:
 
-- `r = 4`, `w = 2`, `x = 1`
-- Example: `755` = owner `rwx`, group `r-x`, others `r-x`
+```text
+/home/harry/private.txt
+/home/project/app.py
+/etc/nginx/nginx.conf
+```
+
+Linux needs to decide who can **read, modify, or execute** each resource.
+
+---
+
+### 1. Users
+
+Every person or process in Linux operates as a user.
+
+Check the current user:
+
+```bash
+whoami
+```
+
+**Example Output:**
+
+```text
+harry
+```
+
+View a user's UID, GID, and groups:
+
+```bash
+id harry
+```
+
+**Example Output:**
+
+```text
+uid=1000(harry) gid=1000(harry) groups=1000(harry),27(sudo)
+```
+
+- **UID** → User ID
+- **GID** → Primary Group ID
+- **groups** → Groups the user belongs to
+
+---
+
+### 2. Groups
+
+Groups allow multiple users to share the same permissions.
+
+```text
+developers
+├── Alice
+├── Bob
+└── Charlie
+```
+
+Check a user's groups:
+
+```bash
+groups harry
+id harry
+```
+
+Create a group:
+
+```bash
+sudo groupadd developers
+```
+
+Add a user to the group:
+
+```bash
+sudo usermod -aG developers harry
+```
+
+Here:
+
+- `-a` → Append the user without removing existing group memberships.
+- `-G` → Specify supplementary groups.
+
+> [!NOTE]
+> After changing group membership, the user may need to log out and log back in before the change appears in the current session.
+
+---
+
+### 3. Understanding File Permissions
+
+View file permissions:
+
+```bash
+ls -l
+```
+
+Example:
+
+```text
+-rwxr-xr-- 1 harry developers 1234 Aug 24 app.sh
+```
+
+The permission section:
+
+```text
+-rwxr-xr--
+││  │  │
+││  │  └── Others
+││  └───── Group
+│└──────── Owner
+└───────── File type
+```
+
+Linux permissions are divided into three categories:
+
+| Category | Meaning |
+|----------|---------|
+| Owner | User who owns the file |
+| Group | Group associated with the file |
+| Others | Everyone else |
+
+### Permission Types
+
+| Permission | Symbol | Meaning |
+|------------|--------|---------|
+| Read | `r` | Read file contents |
+| Write | `w` | Modify the file |
+| Execute | `x` | Execute the file |
+
+Example:
+
+```text
+rwx | r-x | r--
+Owner | Group | Others
+```
+
+This means:
+
+- **Owner:** read, write, execute
+- **Group:** read and execute
+- **Others:** read only
+
+---
+
+### 4. File Types
+
+The first character in `ls -l` output identifies the file type.
+
+```text
+-  → Regular file
+d  → Directory
+l  → Symbolic link
+```
+
+Example:
+
+```text
+-rwxr-xr--
+```
+
+The `-` means it is a regular file.
+
+---
+
+### 5. Directory Permissions
+
+For directories:
+
+| Permission | Meaning |
+|------------|---------|
+| `r` | List directory contents |
+| `w` | Create, delete, or rename entries |
+| `x` | Enter or traverse the directory |
+
+Create a test directory:
+
+```bash
+mkdir test
+```
+
+View its permissions:
+
+```bash
+ls -ld test
+```
+
+---
+
+### 6. Changing Permissions with `chmod`
+
+Check a file's permissions:
+
+```bash
+ls -l script.sh
+```
+
+You might see:
+
+```text
+-rw-r--r-- script.sh
+```
+
+Make it executable:
+
+```bash
+chmod +x script.sh
+```
+
+Then run it:
+
+```bash
+./script.sh
+```
+
+### Symbolic Permission Changes
+
+```bash
+chmod u+x script.sh
+chmod g+w file.txt
+chmod o-r file.txt
+chmod g=rx file.txt
+```
+
+| Symbol | Meaning |
+|--------|---------|
+| `u` | User / owner |
+| `g` | Group |
+| `o` | Others |
+| `a` | All users |
+| `+` | Add permission |
+| `-` | Remove permission |
+| `=` | Set exact permissions |
+
+Examples:
+
+```text
+u+x   → Add execute permission to owner
+g+w   → Add write permission to group
+o-r   → Remove read permission from others
+g=rx  → Set group permissions to read + execute only
+```
+
+---
+
+### 7. Numeric Permissions
+
+Linux permissions can also be represented using numbers.
+
+```text
+r = 4
+w = 2
+x = 1
+```
+
+Common combinations:
+
+| Permission | Value |
+|------------|------:|
+| `rwx` | 7 |
+| `rw-` | 6 |
+| `r-x` | 5 |
+| `r--` | 4 |
+| `-wx` | 3 |
+| `-w-` | 2 |
+| `--x` | 1 |
+| `---` | 0 |
+
+The three digits represent:
+
+```text
+Owner | Group | Others
+```
+
+Generic syntax:
+
+```bash
+chmod 755 file
+```
+
+#### `755`
+
+```bash
+chmod 755 script.sh
+```
+
+```text
+7 = rwx → Owner: read + write + execute
+5 = r-x → Group: read + execute
+5 = r-x → Others: read + execute
+```
+
+#### `644`
+
+```bash
+chmod 644 file.txt
+```
+
+```text
+6 | 4 | 4
+rw- | r-- | r--
+```
+
+- Owner → read + write
+- Group → read
+- Others → read
+
+#### `700`
+
+```bash
+chmod 700 private.txt
+```
+
+```text
+rwx | --- | ---
+```
+
+Only the owner has access.
+
+### Why `777` Can Be Dangerous
+
+```bash
+chmod 777 file
+```
+
+Means:
+
+```text
+rwx | rwx | rwx
+```
+
+Everyone can read, modify, and execute the file.
 
 > [!WARNING]
-> `chmod`, `chown`, and `chgrp` can lock users out or expose files. Apply changes only to intended paths.
+> Do not solve permission problems by blindly using `chmod 777`. Give users only the permissions they actually need.
+
+---
+
+### 8. Changing Ownership
+
+Suppose:
+
+```text
+-rw-r--r-- 1 harry developers app.py
+```
+
+Change the owner to Alice:
+
+```bash
+sudo chown alice app.py
+```
+
+Change both owner and group:
+
+```bash
+sudo chown alice:developers app.py
+```
+
+Generic syntax:
+
+```bash
+chown OWNER:GROUP FILE
+```
+
+Change only the group:
+
+```bash
+sudo chgrp developers app.py
+```
+
+```text
+chown → Change ownership
+chgrp → Change group
+chmod → Change permissions
+```
+
+---
+
+### 9. Recursive Ownership Changes
+
+Suppose your project contains:
+
+```text
+project/
+├── app.py
+├── config.txt
+└── logs/
+    └── app.log
+```
+
+Change ownership of only the `project` directory:
+
+```bash
+sudo chown lovish:developers project
+```
+
+Change ownership recursively for the directory and everything inside it:
+
+```bash
+sudo chown -R lovish:developers project
+```
+
+> [!CAUTION]
+> `-R` means recursive. Verify the path carefully because it can change ownership of a large number of files.
+
+---
+
+### 10. Reading an `ls -l` Entry
+
+Example:
+
+```text
+drwxr-x--- 3 harry harry 4096 Aug 23 10:21 harry
+```
+
+| Part | Meaning |
+|------|---------|
+| `d` | Directory |
+| `rwxr-x---` | Permissions |
+| `3` | Hard-link count |
+| First `harry` | Owner |
+| Second `harry` | Group |
+| `4096` | Directory size reported by `ls` |
+| `Aug 23 10:21` | Last modification time |
+| Final `harry` | Directory name |
+
+To view the total disk usage of the directory:
+
+```bash
+du -sh harry
+```
+
+---
+
+### 11. How Linux Chooses Permissions
+
+Suppose:
+
+```text
+-rwxr----- 1 harry developers app.py
+```
+
+Permissions are:
+
+```text
+Owner  → rwx
+Group  → r--
+Others → ---
+```
+
+Linux checks permissions in this order:
+
+```text
+Is the user the owner?
+        ↓
+      YES → Use OWNER permissions
+        ↓ NO
+Is the user in the file's group?
+        ↓
+      YES → Use GROUP permissions
+        ↓ NO
+Use OTHERS permissions
+```
+
+Linux does not combine these permission sets.
+
+---
+
+### 12. Worked Example
+
+Create two users:
+
+```bash
+sudo adduser alice
+sudo adduser bob
+```
+
+Create a developers group:
+
+```bash
+sudo groupadd developers
+```
+
+Add both users:
+
+```bash
+sudo usermod -aG developers alice
+sudo usermod -aG developers bob
+```
+
+Create a project file:
+
+```bash
+sudo touch /opt/project.txt
+```
+
+Set Alice as the owner and `developers` as the group:
+
+```bash
+sudo chown alice:developers /opt/project.txt
+```
+
+Check ownership and permissions:
+
+```bash
+ls -l /opt/project.txt
+```
+
+Set permissions:
+
+```bash
+sudo chmod 640 /opt/project.txt
+```
+
+`640` means:
+
+```text
+6 → Owner:  read + write
+4 → Group:  read
+0 → Others: no permissions
+```
+
+Therefore:
+
+```text
+Owner  → Alice
+Group  → developers
+Others → Everyone else
+```
+
+---
 
 ## Processes & Services
 
