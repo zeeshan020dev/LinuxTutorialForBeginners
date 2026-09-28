@@ -3580,20 +3580,321 @@ pwd
 
 ## Understanding Nginx
 
-Nginx is a high-performance web server and reverse proxy.
+**Nginx** is a web server that listens for HTTP/HTTPS requests, usually on ports **80** and **443**, and returns web pages or other responses.
 
-| Command | Purpose |
-|---|---|
-| `sudo apt update` | Refresh packages |
-| `sudo apt install nginx` | Install Nginx |
-| `systemctl status nginx` | Check service status |
-| `sudo systemctl restart nginx` | Restart after config changes |
-| `sudo systemctl reload nginx` | Reload safely |
-| `cd /var/www` | Typical web root location |
-| `sudo ufw status` | Check firewall state |
+On a Linux VPS:
 
-> [!SECURITY]
-> Review firewall and server config changes carefully. Misconfiguration can expose services publicly.
+```text
+Browser → Port 80/443 → Nginx → Website Files
+```
+
+You can check the Nginx service with:
+
+```bash
+systemctl status nginx
+```
+
+---
+
+### 1. Install and Start Nginx
+
+Update the package list:
+
+```bash
+sudo apt update
+```
+
+Install Nginx:
+
+```bash
+sudo apt install nginx
+```
+
+Enable Nginx at boot and start it immediately:
+
+```bash
+sudo systemctl enable --now nginx
+```
+
+Check its status:
+
+```bash
+systemctl status nginx
+```
+
+Check whether it is active:
+
+```bash
+systemctl is-active nginx
+```
+
+View running Nginx processes:
+
+```bash
+ps aux | grep nginx
+```
+
+Several Nginx processes running under one service are normal.
+
+---
+
+### 2. Test the Default Website
+
+From the Linux server, test Nginx using:
+
+```bash
+curl http://127.0.0.1
+```
+
+or:
+
+```bash
+curl http://localhost
+```
+
+These commands display the HTML returned by Nginx.
+
+To view only HTTP headers:
+
+```bash
+curl -I http://127.0.0.1
+```
+
+A successful response may include:
+
+```text
+HTTP/1.1 200 OK
+Server: nginx
+```
+
+From your own computer, open:
+
+```text
+http://YOUR_SERVER_IP
+```
+
+in a web browser.
+
+---
+
+### 3. Troubleshoot Nginx
+
+Check whether something is listening on port 80:
+
+```bash
+sudo ss -tlnp | grep ':80'
+```
+
+Test the Nginx configuration:
+
+```bash
+sudo nginx -t
+```
+
+View the latest Nginx service logs:
+
+```bash
+sudo journalctl -u nginx -n 50
+```
+
+```text
+ss          → Check listening ports
+nginx -t    → Test Nginx configuration
+journalctl  → View service logs
+```
+
+---
+
+### 4. Important Nginx Locations
+
+Common Nginx paths on Ubuntu:
+
+```text
+/etc/nginx/nginx.conf         → Main Nginx configuration
+/etc/nginx/sites-available/   → Available site configurations
+/etc/nginx/sites-enabled/     → Enabled site configurations
+/var/www/html/                → Default website files
+```
+
+List available sites:
+
+```bash
+ls /etc/nginx/sites-available
+```
+
+List enabled sites:
+
+```bash
+ls /etc/nginx/sites-enabled
+```
+
+View enabled-site links in detail:
+
+```bash
+ls -l /etc/nginx/sites-enabled
+```
+
+Enabled sites are commonly symbolic links to configuration files stored in `sites-available`.
+
+---
+
+### 5. Serve Your Own Web Page
+
+Check the default web directory:
+
+```bash
+ls -l /var/www/html
+```
+
+Edit the default HTML page:
+
+```bash
+sudo nano /var/www/html/index.html
+```
+
+Add simple HTML such as:
+
+```html
+<!DOCTYPE html>
+<html>
+<head><title>Hello</title></head>
+<body><h1>Hello from Nginx</h1></body>
+</html>
+```
+
+Save the file and test it:
+
+```bash
+curl http://127.0.0.1
+```
+
+For normal static HTML changes, Nginx does not need to be restarted because it reads the file when a request arrives.
+
+---
+
+### 6. Reload Nginx Configuration
+
+When you change Nginx configuration files, test them first:
+
+```bash
+sudo nginx -t
+```
+
+Then reload Nginx:
+
+```bash
+sudo systemctl reload nginx
+```
+
+If a full restart is required:
+
+```bash
+sudo systemctl restart nginx
+```
+
+```text
+reload  → Reload configuration without fully stopping Nginx
+restart → Stop and start Nginx again
+```
+
+> [!NOTE]
+> For configuration changes, prefer `reload` when possible. Editing static HTML inside `/var/www/html` normally requires only refreshing the browser.
+
+> [!WARNING]
+> Do not use `chmod 777` on the web root just to solve permission problems. Fix the correct ownership or group permissions instead. On Ubuntu, Nginx commonly runs as `www-data`.
+
+---
+
+### 7. Basic Nginx Server Block
+
+A simple Nginx server block defines which port to listen on and which files to serve.
+
+```nginx
+server {
+    listen 80;
+    server_name _;
+    root /var/www/html;
+    index index.html;
+}
+```
+
+```text
+listen 80           → Listen for HTTP traffic
+server_name _       → Match the server name
+root /var/www/html  → Website files location
+index index.html    → Default page
+```
+
+The default Ubuntu Nginx configuration already provides this basic setup.
+
+---
+
+### 8. Enable Additional Sites
+
+For additional websites, the typical flow is:
+
+```text
+sites-available
+      ↓
+Create/Edit Site Configuration
+      ↓
+Link into sites-enabled
+      ↓
+Test with nginx -t
+      ↓
+Reload Nginx
+```
+
+Disabling a site usually means removing its symbolic link from `sites-enabled` while keeping the original configuration in `sites-available`.
+
+---
+
+### 9. If the Website Does Not Load
+
+Follow this troubleshooting sequence:
+
+**1. Check whether Nginx is running**
+
+```bash
+systemctl status nginx
+```
+
+**2. Test the configuration**
+
+```bash
+sudo nginx -t
+```
+
+**3. Test the website locally from the server**
+
+```bash
+curl http://127.0.0.1
+```
+
+If local `curl` works but the website does not open from your computer, check the firewall or VPS provider's security settings.
+
+Check UFW status:
+
+```bash
+sudo ufw status
+```
+
+Allow HTTP traffic:
+
+```bash
+sudo ufw allow 80/tcp
+```
+
+Allow HTTPS traffic:
+
+```bash
+sudo ufw allow 443/tcp
+```
+
+> [!NOTE]
+> These UFW commands apply only if your server uses UFW. Some VPS providers manage firewall rules through their hosting dashboard instead.
+
+---
 
 ## Using FileZilla to Transfer Files
 
