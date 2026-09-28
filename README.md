@@ -2237,35 +2237,396 @@ journalctl → Reads system and service logs
 
 ---
 
-## Environment Variables, PATH and Bashrc
+## Environment Variables, PATH and `.bashrc`
 
-| Command | Purpose |
-|---|---|
-| `echo $HOME` | Show HOME variable |
-| `printenv` / `env` | List environment variables |
-| `echo $PATH` | Show executable search paths |
-| `which ls` | Show command binary path |
-| `export NAME=value` | Export environment variable |
-| `export PATH="$PATH:/new/path"` | Append directory to PATH |
-| `vim .bashrc` | Edit shell startup file |
-| `source .bashrc` | Reload .bashrc now |
+Environment variables store configuration values used by the shell and programs. `PATH` tells Linux where to search for commands, while `.bashrc` stores Bash settings that should persist across shell sessions.
+
+---
+
+### 1. Environment Variables
+
+An **environment variable** is a named value stored in the shell environment.
+
+Check common variables:
+
+```bash
+echo $HOME
+echo $USER
+echo $SHELL
+```
 
 Example:
 
-```bash
-name="Zeeshan"
-echo $name
-export friend="value"
-echo $friend
+```text
+HOME=/home/harry
+USER=harry
+SHELL=/bin/bash
 ```
 
-Simple script flow:
+View environment variables:
 
 ```bash
-vim hello.sh
+printenv
+env
+```
+
+The `$` symbol means: **get the value stored in this variable**.
+
+For example:
+
+```bash
+echo $HOME
+```
+
+prints the value of `HOME`, while:
+
+```bash
+echo HOME
+```
+
+simply prints:
+
+```text
+HOME
+```
+
+---
+
+### 2. Create Variables
+
+Create a shell variable:
+
+```bash
+name="Harry"
+```
+
+Display its value:
+
+```bash
+echo $name
+```
+
+> [!IMPORTANT]
+> Do not place spaces around `=`.
+
+Correct:
+
+```bash
+name="Harry"
+```
+
+Incorrect:
+
+```bash
+name = "Harry"
+```
+
+The incorrect version is interpreted differently by the shell and produces an error.
+
+---
+
+### 3. Shell Variables vs Environment Variables
+
+A normal variable exists only in the current shell:
+
+```bash
+name="Harry"
+```
+
+To make it available to programs launched from that shell, use `export`:
+
+```bash
+export name="Harry"
+export APP_ENV="production"
+```
+
+You can also write:
+
+```bash
+export APP_ENV=production
+```
+
+Environment variables are commonly used for application configuration, such as:
+
+```text
+DATABASE_URL
+API_KEY
+PORT
+APP_ENV
+DEBUG
+```
+
+> [!WARNING]
+> Environment variables are not automatically secure. Sensitive values may be exposed through logs, debugging, process inspection, or incorrect configuration.
+
+---
+
+### 4. Understanding `PATH`
+
+`PATH` contains the directories Linux searches when you enter a command.
+
+Check it with:
+
+```bash
+echo $PATH
+```
+
+Example:
+
+```text
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+```
+
+The directories are separated by `:`.
+
+```text
+PATH
+├── /usr/local/sbin
+├── /usr/local/bin
+├── /usr/sbin
+├── /usr/bin
+├── /sbin
+└── /bin
+```
+
+When you run commands such as:
+
+```bash
+ls
+cat
+sudo
+```
+
+the shell searches directories in `PATH` to find them.
+
+---
+
+### 5. Find Where a Command Comes From
+
+Find the executable used by a command:
+
+```bash
+which ls
+```
+
+Example output:
+
+```text
+/usr/bin/ls
+```
+
+A better shell-aware method is:
+
+```bash
+command -v ls
+```
+
+You can also use:
+
+```bash
+type ls
+```
+
+`type` can tell you whether something is an alias, function, shell builtin, or external command.
+
+For example:
+
+```bash
+type cd
+```
+
+may return:
+
+```text
+cd is a shell builtin
+```
+
+---
+
+### 6. Why `./` is Sometimes Required
+
+Suppose you have a script named `hello.sh`.
+
+Make it executable:
+
+```bash
 chmod +x hello.sh
+```
+
+Running:
+
+```bash
+hello.sh
+```
+
+may produce:
+
+```text
+command not found
+```
+
+But this works:
+
+```bash
 ./hello.sh
 ```
+
+`./` means:
+
+> Run `hello.sh` from the current directory.
+
+The current directory (`.`) is normally not included in `PATH`, partly for security reasons.
+
+---
+
+### 7. Add a Directory to `PATH`
+
+Suppose your scripts are stored in:
+
+```text
+/home/harry/scripts
+```
+
+Add that directory to the existing `PATH`:
+
+```bash
+export PATH="$PATH:/home/harry/scripts"
+```
+
+Check the updated value:
+
+```bash
+echo $PATH
+```
+
+Now commands stored in that directory can be executed without typing their full path.
+
+For example:
+
+```bash
+command -v backup
+```
+
+> [!WARNING]
+> Do not replace your entire `PATH` like this:
+
+```bash
+export PATH="/home/harry/scripts"
+```
+
+Doing so removes the existing directories from `PATH`, which can make commands such as `ls`, `cat`, and `sudo` unavailable by their normal names.
+
+---
+
+### 8. Temporary vs Permanent Variables
+
+A command such as:
+
+```bash
+export APP_ENV=production
+```
+
+normally lasts only for the current shell session.
+
+To make Bash settings persistent, add them to:
+
+```text
+~/.bashrc
+```
+
+For example:
+
+```bash
+export APP_ENV=production
+export PATH="$PATH:$HOME/scripts"
+```
+
+Reload `.bashrc` without opening a new terminal:
+
+```bash
+source ~/.bashrc
+```
+
+The shorthand form is:
+
+```bash
+. ~/.bashrc
+```
+
+Here, `.` acts as the `source` command.
+
+---
+
+### 9. Worked Example
+
+Check your current `PATH`:
+
+```bash
+echo $PATH
+```
+
+Create a scripts directory:
+
+```bash
+mkdir -p ~/scripts
+```
+
+Create a file named:
+
+```text
+~/scripts/hello
+```
+
+Add:
+
+```bash
+#!/bin/bash
+echo "Hello from my script!"
+```
+
+Make it executable:
+
+```bash
+chmod +x ~/scripts/hello
+```
+
+Running the full path works:
+
+```bash
+~/scripts/hello
+```
+
+But this may not work yet:
+
+```bash
+hello
+```
+
+Add the scripts directory to `PATH`:
+
+```bash
+export PATH="$PATH:$HOME/scripts"
+```
+
+Now run:
+
+```bash
+hello
+```
+
+Verify where Linux finds it:
+
+```bash
+command -v hello
+```
+
+Example output:
+
+```text
+/home/harry/scripts/hello
+```
+
+---
 
 ## Archives and Compression
 
