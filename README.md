@@ -4327,3 +4327,24 @@ Commands let you control the machine
 ```
 
 You now have the foundation to use Linux intentionally, troubleshoot problems, manage services, automate tasks, and work with Linux servers.
+
+## Author
+
+Click the box below to visit the author's GitHub profile and explore more projects, open-source work, and contributions.
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="220px">
+        <a href="https://github.com/zeeshan020dev">
+          <img src="https://github.com/zeeshan020dev.png?size=100" width="100px;" alt="Muhammad Zeeshan Islam"/>
+          <br />
+          <sub><b>Muhammad&nbsp;Zeeshan&nbsp;Islam</b></sub>
+        </a>
+        <br />
+        <a href="https://github.com/zeeshan020dev" title="GitHub Profile">💻</a>
+        <a href="https://github.com/zeeshan020dev" title="Documentation">📖</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
