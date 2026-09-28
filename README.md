@@ -3254,6 +3254,8 @@ cat /home/harry/cron.log
 
 If `Cron works!` appears repeatedly, cron is running correctly.
 
+> **Practice Resource:** [crontab.guru](https://crontab.guru/) is a useful website for learning and practicing cron job schedules.
+
 ---
 
 ## Understanding Linux Filesystem
