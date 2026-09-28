@@ -3898,17 +3898,258 @@ sudo ufw allow 443/tcp
 
 ## Using FileZilla to Transfer Files
 
-FileZilla helps transfer files between local and remote systems (typically over SFTP).
+**FileZilla** provides a graphical way to transfer files between your computer and a Linux VPS.
 
-Basic flow:
+```text
+SSH       → Command-line access
+FileZilla → Visual file transfer
+```
 
-1. Install FileZilla client
-2. Open Site Manager
-3. Set host, username, and port (usually `22` for SFTP)
-4. Connect and transfer files
+For a VPS, use **SFTP (SSH File Transfer Protocol)** over **port 22**, the same connection used by:
 
-> [!IMPORTANT]
-> 🚧 **Work in progress:** detailed FileZilla step-by-step screenshots and configuration walkthrough are still being added.
+```bash
+ssh
+```
+
+```text
+Laptop → SFTP (Port 22) → Linux VPS
+```
+
+---
+
+### 1. Connect with FileZilla
+
+1. Install the **FileZilla Client** from [filezilla-project.org](https://filezilla-project.org/).
+2. Open **File → Site Manager** or use **Quickconnect**.
+3. Enter your server connection details.
+4. Choose **SFTP**, not FTP.
+5. Connect and accept the server host key on the first connection.
+
+| Field | Typical Value |
+|-------|---------------|
+| Protocol | SFTP |
+| Host | `203.0.113.10` (your server IP) |
+| Port | `22` |
+| User | `root`, `ubuntu`, or your SSH user |
+| Password / Key | Same credentials used for SSH |
+
+After connecting:
+
+```text
+Local side  → Files on your laptop
+Remote side → Files on your VPS
+```
+
+Drag a file to the remote side to **upload** it, or drag it back to **download** it.
+
+> [!WARNING]
+> Use **SFTP on port 22** instead of old unencrypted FTP on port 21.
+
+---
+
+### 2. Common Remote Locations
+
+Useful server directories include:
+
+```text
+/home/harry
+/var/www/html
+/etc/nginx
+```
+
+For example, files uploaded to:
+
+```text
+/var/www/html
+```
+
+can be served by Nginx.
+
+You can also edit files directly on the server using:
+
+```bash
+nano
+```
+
+---
+
+### 3. File Permissions After Upload
+
+Uploaded files still follow Linux ownership and permission rules.
+
+Use:
+
+```bash
+chown
+```
+
+to change ownership, and:
+
+```bash
+chmod
+```
+
+to change permissions.
+
+Avoid blindly using:
+
+```bash
+chmod 777 <file>
+```
+
+A file owned by `root` with restrictive permissions such as `600` may not be readable by Nginx's usual `www-data` user.
+
+---
+
+## Transfer Files from the Terminal
+
+FileZilla is optional. You can also use `scp`, `sftp`, or `rsync`.
+
+### 4. Upload a File
+
+Using SCP:
+
+```bash
+scp page.html ubuntu@203.0.113.10:/var/www/html/
+```
+
+Using SFTP:
+
+```bash
+sftp ubuntu@203.0.113.10
+```
+
+Using rsync:
+
+```bash
+rsync -av page.html ubuntu@203.0.113.10:/var/www/html/
+```
+
+```text
+scp   → One-shot file copy
+sftp  → Interactive file-transfer session
+rsync → Efficient repeated synchronization
+```
+
+---
+
+### 5. SFTP Interactive Commands
+
+After connecting with:
+
+```bash
+sftp ubuntu@203.0.113.10
+```
+
+you can use:
+
+```bash
+put index.html
+get index.html
+ls
+cd
+bye
+```
+
+| Command | Purpose |
+|---------|---------|
+| `put index.html` | Upload a file |
+| `get index.html` | Download a file |
+| `ls` | List remote files |
+| `cd` | Change remote directory |
+| `bye` | Exit the SFTP session |
+
+---
+
+### 6. Download a File
+
+Using SCP:
+
+```bash
+scp ubuntu@203.0.113.10:/var/www/html/index.html .
+```
+
+Using SFTP:
+
+```bash
+sftp ubuntu@203.0.113.10
+```
+
+Then:
+
+```bash
+get index.html
+```
+
+Using rsync:
+
+```bash
+rsync -av ubuntu@203.0.113.10:/var/www/html/index.html .
+```
+
+Here, `.` means the current local directory.
+
+---
+
+### 7. Copy a Whole Directory
+
+Using SCP:
+
+```bash
+scp -r site/ ubuntu@203.0.113.10:/var/www/html/
+```
+
+Using rsync:
+
+```bash
+rsync -av site/ ubuntu@203.0.113.10:/var/www/html/
+```
+
+```text
+-r → Copy recursively
+-a → Preserve attributes such as permissions and timestamps
+-v → Verbose output
+```
+
+> [!NOTE]
+> With `rsync`, trailing slashes matter. `site/` copies the directory's contents, while `site` can result in the directory itself being placed inside the destination.
+
+---
+
+### 8. Transfer Files Using an SSH Key
+
+Use an SSH private key with SCP:
+
+```bash
+scp -i ~/.ssh/id_rsa page.html ubuntu@203.0.113.10:/var/www/html/
+```
+
+With SFTP:
+
+```bash
+sftp -i ~/.ssh/id_rsa ubuntu@203.0.113.10
+```
+
+With rsync:
+
+```bash
+rsync -av -e "ssh -i ~/.ssh/id_rsa" page.html ubuntu@203.0.113.10:/var/www/html/
+```
+
+---
+
+### What to Use When
+
+| Tool | Best For |
+|------|----------|
+| **FileZilla** | Visual browsing and occasional uploads |
+| **SCP** | Quickly copying one file or a small directory |
+| **SFTP** | Interactive file transfer through SSH |
+| **rsync** | Repeatedly synchronizing project folders |
+
+All of these transfer files to the same Linux server. Nginx does not care whether `index.html` arrived through FileZilla, `scp`, `rsync`, or `nano`; it serves whatever is inside the configured web root.
+
+---
 
 ## Conclusion
 
