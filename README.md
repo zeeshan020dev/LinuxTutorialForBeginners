@@ -1825,28 +1825,417 @@ Others → Everyone else
 
 ## Processes & Services
 
-A **process** is a running program (with a PID). A **service** is a managed background process.
+Linux uses **processes** to run programs and **services** to manage long-running background applications.
 
-| Command | Purpose |
-|---|---|
-| `ps` | Show current shell processes |
-| `ps aux` | Show all processes |
-| `ps aux | grep nginx` | Filter processes |
-| `top` | Real-time process view |
-| `htop` | Improved interactive process view |
-| `kill <PID>` | Stop process gracefully |
-| `kill -9 <PID>` | Force kill process |
-| `pkill <name>` | Kill by process name |
-| `systemctl status nginx` | Service status |
-| `systemctl start nginx` | Start service |
-| `systemctl stop nginx` | Stop service |
-| `systemctl restart nginx` | Restart service |
-| `sudo systemctl reload nginx` | Reload config without full stop |
-| `sudo systemctl enable nginx` | Start service at boot |
-| `sudo systemctl disable nginx` | Disable auto-start |
+```text
+Program  → Code stored on disk
+Process  → A running instance of a program
+Service  → A background application managed by systemd
+```
+
+For example, running:
+
+```bash
+python app.py
+```
+
+starts a Python process. Even a short command such as:
+
+```bash
+ls
+```
+
+runs as a process and exits when its work is complete.
+
+---
+
+### 1. Process IDs (PID)
+
+Every running process has a unique **PID (Process ID)**.
+
+Use `ps` to view processes associated with your current terminal:
+
+```bash
+ps
+```
+
+**Example Output:**
+
+```text
+PID    TTY      TIME     CMD
+1234   pts/0    00:00:00 bash
+5678   pts/0    00:00:00 ps
+```
+
+Here, `5678` is the PID of the `ps` command itself.
+
+### 2. View All Processes
+
+For a more detailed process list:
+
+```bash
+ps aux
+```
+
+Important columns include:
+
+| Column | Meaning |
+|--------|---------|
+| `USER` | Process owner |
+| `PID` | Process ID |
+| `%CPU` | CPU usage |
+| `%MEM` | Memory usage |
+| `STAT` | Process state |
+| `START` | Start time |
+| `TIME` | CPU time used |
+| `COMMAND` | Program or command |
+
+### 3. Find a Specific Process
+
+Search the process list for Nginx:
+
+```bash
+ps aux | grep nginx
+```
+
+The `|` symbol is a **pipe**. It sends the output of `ps aux` to `grep`, which searches for `nginx`.
+
+A cleaner option is:
+
+```bash
+pgrep nginx
+```
+
+This returns matching PIDs.
+
+To display both the PID and command:
+
+```bash
+pgrep -a nginx
+```
+
+---
+
+### 4. Monitor Processes in Real Time
+
+`ps` gives you a snapshot. `top` continuously updates process information:
+
+```bash
+top
+```
+
+Use it to identify processes consuming high CPU or memory.
+
+A more interactive alternative is:
+
+```bash
+htop
+```
+
+If `htop` is not installed:
+
+```bash
+sudo apt install htop
+```
+
+```text
+ps    → Process snapshot
+top   → Live monitoring
+htop  → Interactive live monitoring
+```
+
+---
+
+### 5. Stop Processes
+
+To request that a process shuts down gracefully:
+
+```bash
+kill 1234
+```
+
+or generally:
+
+```bash
+kill PID
+```
+
+By default, `kill` sends **SIGTERM**, allowing the process to clean up before exiting.
+
+To force a process to stop immediately:
+
+```bash
+kill -9 1234
+```
+
+or:
+
+```bash
+kill -9 PID
+```
+
+`-9` sends **SIGKILL**, which the process cannot ignore.
+
+```text
+kill PID      → Graceful termination request
+kill -9 PID   → Force immediate termination
+```
 
 > [!WARNING]
-> `kill -9` should be a last resort. It force-stops without graceful cleanup.
+> Try normal `kill` first. Use `kill -9` only when the process does not terminate normally.
+
+To terminate processes by name:
+
+```bash
+pkill nginx
+```
+
+> [!CAUTION]
+> `pkill` can terminate multiple processes matching the given name. Make sure you are targeting the correct application.
+
+---
+
+## Services
+
+A **service** is software that normally runs in the background and provides functionality to the system or other applications.
+
+Examples:
+
+```text
+nginx → Web server
+ssh   → Remote access
+mysql → Database
+cron  → Scheduled tasks
+```
+
+Many Linux systems use **systemd** to manage services.
+
+```text
+systemd
+   ↓
+systemctl
+   ↓
+Services such as nginx
+```
+
+---
+
+### 6. Check Service Status
+
+Check whether Nginx is running:
+
+```bash
+systemctl status nginx
+```
+
+Common states include:
+
+```text
+active (running) → Service is running
+inactive (dead)  → Service is stopped
+failed           → Service failed to start or stopped unexpectedly
+```
+
+---
+
+### 7. Start, Stop, Restart & Reload Services
+
+Start Nginx:
+
+```bash
+sudo systemctl start nginx
+```
+
+Stop Nginx:
+
+```bash
+sudo systemctl stop nginx
+```
+
+Restart Nginx:
+
+```bash
+sudo systemctl restart nginx
+```
+
+Reload its configuration without fully stopping the service:
+
+```bash
+sudo systemctl reload nginx
+```
+
+```text
+restart → Stop + start the service
+reload  → Reload configuration while keeping the service running
+```
+
+> **Note:** Not every service supports `reload`.
+
+---
+
+### 8. Enable or Disable Services at Boot
+
+Enable Nginx to start automatically during system boot:
+
+```bash
+sudo systemctl enable nginx
+```
+
+Disable automatic startup:
+
+```bash
+sudo systemctl disable nginx
+```
+
+```text
+start   → Start service now
+stop    → Stop service now
+enable  → Start automatically at boot
+disable → Do not start automatically at boot
+```
+
+Disabling a service does not necessarily stop a service that is already running.
+
+To enable and start it immediately:
+
+```bash
+sudo systemctl enable --now nginx
+```
+
+To disable automatic startup and stop it immediately:
+
+```bash
+sudo systemctl disable --now nginx
+```
+
+The `--now` option applies the boot configuration change and immediately starts or stops the service.
+
+---
+
+### 9. List & Check Services
+
+List currently loaded service units:
+
+```bash
+systemctl list-units --type=service
+```
+
+List available service definitions and their enablement state:
+
+```bash
+systemctl list-unit-files --type=service
+```
+
+Check whether Nginx is currently active:
+
+```bash
+systemctl is-active nginx
+```
+
+Check whether it is enabled at boot:
+
+```bash
+systemctl is-enabled nginx
+```
+
+---
+
+### 10. View Service Logs
+
+Linux systems using systemd provide `journalctl` for viewing service logs.
+
+View Nginx logs:
+
+```bash
+journalctl -u nginx
+```
+
+Show the latest 50 log entries:
+
+```bash
+journalctl -u nginx -n 50
+```
+
+Follow new log entries in real time:
+
+```bash
+journalctl -u nginx -f
+```
+
+Here:
+
+```text
+-u     → Select a systemd unit
+-n 50  → Show the latest 50 entries
+-f     → Follow new log entries
+```
+
+The `-f` behavior is similar to:
+
+```bash
+tail -f <file>
+```
+
+---
+
+### 11. Troubleshooting a Service
+
+If your Nginx website is not working, use this sequence:
+
+**1. Check service status**
+
+```bash
+sudo systemctl status nginx
+```
+
+**2. Start it if it is stopped**
+
+```bash
+sudo systemctl start nginx
+```
+
+**3. Check recent logs if it failed**
+
+```bash
+sudo journalctl -u nginx -n 50
+```
+
+**4. Check whether Nginx processes exist**
+
+```bash
+ps aux | grep nginx
+```
+
+**5. Check system resource usage**
+
+```bash
+top
+```
+
+---
+
+### Process vs. Service
+
+A **process** is a specific running instance of a program identified by a PID.
+
+A **service** is an application managed by the system's service manager and may contain multiple processes.
+
+```text
+nginx.service
+│
+├── nginx process PID 1234
+├── nginx process PID 1235
+└── nginx process PID 1236
+```
+
+```text
+Process    → Running program identified by PID
+Service    → Managed background application
+systemctl  → Controls systemd services
+journalctl → Reads system and service logs
+```
+
+---
 
 ## Environment Variables, PATH and Bashrc
 
