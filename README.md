@@ -2935,34 +2935,326 @@ unzip project.zip
 
 ## Cronjobs
 
-Cron schedules recurring tasks.
+**Cron jobs** automatically run commands or scripts at scheduled times.
 
-| Command | Purpose |
-|---|---|
-| `crontab -l` | List current cron jobs |
-| `crontab -e` | Edit cron jobs |
-| `sudo systemctl status cron` | Check cron service |
-| `sudo systemctl start cron` | Start cron service |
-| `sudo systemctl restart cron` | Restart cron service |
-| `sudo systemctl stop cron` | Stop cron service |
+Examples include:
 
-Cron fields:
+- Creating backups every night
+- Running scripts every hour
+- Cleaning files every Sunday
+- Generating reports automatically
 
-| Field | Allowed values | Notes |
-|---|---|---|
-| Minute | `0-59` | Minute of the hour |
-| Hour | `0-23` | 24-hour format |
-| Day of Month | `1-31` | Calendar day |
-| Month | `1-12` or `JAN-DEC` | Month |
-| Day of Week | `0-7` or `SUN-SAT` | `0` and `7` = Sunday |
+A scheduled task is called a **cron job**, and the background service that runs these tasks is called **cron**.
 
-Example cron entry (runs daily at 02:30):
+---
+
+### 1. Check the Cron Service
+
+Check whether cron is running:
 
 ```bash
-30 2 * * * /home/user/backup.sh
+systemctl status cron
 ```
 
-Helpful reference: [crontab.guru](https://crontab.guru)
+You should see:
+
+```text
+Active: active (running)
+```
+
+If cron is not running:
+
+```bash
+sudo systemctl start cron
+```
+
+Enable it to start automatically when the system boots:
+
+```bash
+sudo systemctl enable cron
+```
+
+---
+
+### 2. Understanding `crontab`
+
+A **crontab** is a file containing scheduled tasks for a user.
+
+List your current cron jobs:
+
+```bash
+crontab -l
+```
+
+Edit your cron jobs:
+
+```bash
+crontab -e
+```
+
+Example:
+
+```cron
+*/5 * * * * echo "Hello" >> /home/harry/cron.log
+```
+
+This appends `Hello` to `cron.log` every 5 minutes.
+
+---
+
+### 3. Cron Schedule Format
+
+A cron job contains five scheduling fields followed by a command:
+
+```text
+* * * * * command
+│ │ │ │ │
+│ │ │ │ └── Day of week   (0-7)
+│ │ │ └──── Month         (1-12)
+│ │ └────── Day of month  (1-31)
+│ └──────── Hour          (0-23)
+└────────── Minute        (0-59)
+```
+
+`*` means **every possible value**.
+
+For example:
+
+```cron
+* * * * * command
+```
+
+runs the command every minute.
+
+---
+
+### 4. Common Cron Schedules
+
+Run every 5 minutes:
+
+```cron
+*/5 * * * * /home/harry/backup.sh
+```
+
+Run at the beginning of every hour:
+
+```cron
+0 * * * * /home/harry/backup.sh
+```
+
+Run every day at 2:30 AM:
+
+```cron
+30 2 * * * /home/harry/backup.sh
+```
+
+Run every Sunday at 3:00 AM:
+
+```cron
+0 3 * * 0 /home/harry/backup.sh
+```
+
+Run at midnight on the first day of every month:
+
+```cron
+0 0 1 * * /home/harry/report.sh
+```
+
+Run at 9:00 AM on Monday, Wednesday, and Friday:
+
+```cron
+0 9 * * 1,3,5 /home/harry/report.sh
+```
+
+Run at 9:00 AM from Monday to Friday:
+
+```cron
+0 9 * * 1-5 /home/harry/report.sh
+```
+
+Useful cron patterns:
+
+```text
+*       → Every value
+*/5     → Every 5
+1,5,10  → Specific values
+1-5     → Range
+```
+
+Days of the week:
+
+```text
+0 or 7 → Sunday
+1      → Monday
+2      → Tuesday
+3      → Wednesday
+4      → Thursday
+5      → Friday
+6      → Saturday
+```
+
+---
+
+### 5. Run Scripts with Cron
+
+Instead of placing a large command directly inside crontab, create a script.
+
+Create the script:
+
+```bash
+nano /home/harry/backup.sh
+```
+
+Example script:
+
+```bash
+#!/bin/bash
+tar -czf /home/harry/backup.tar.gz /home/harry/project
+```
+
+Make it executable:
+
+```bash
+chmod +x /home/harry/backup.sh
+```
+
+Schedule it to run every day at 2:00 AM:
+
+```cron
+0 2 * * * /home/harry/backup.sh
+```
+
+> [!NOTE]
+> Cron has a more limited environment than your normal terminal. Prefer absolute paths when running scripts and commands.
+
+Find the full path of a command using:
+
+```bash
+which tar
+```
+
+or:
+
+```bash
+command -v tar
+```
+
+---
+
+### 6. Save Cron Output to a Log
+
+Cron output does not normally appear in your terminal.
+
+Redirect output to a log file:
+
+```cron
+* * * * * /home/harry/test.sh >> /home/harry/cron.log 2>&1
+```
+
+Here:
+
+```text
+>>    → Append normal output to the file
+2>&1  → Send error output to the same file
+```
+
+View the log:
+
+```bash
+cat /home/harry/cron.log
+```
+
+or:
+
+```bash
+tail /home/harry/cron.log
+```
+
+---
+
+### 7. User and Root Cron Jobs
+
+Cron jobs belong to individual users.
+
+Your user's crontab:
+
+```bash
+crontab -e
+```
+
+List your jobs:
+
+```bash
+crontab -l
+```
+
+Root has a separate crontab:
+
+```bash
+sudo crontab -e
+```
+
+> [!WARNING]
+> Root cron jobs run with administrative privileges. Incorrect commands can make significant system changes.
+
+---
+
+### 8. Remove Cron Jobs
+
+Edit the crontab and manually remove a job:
+
+```bash
+crontab -e
+```
+
+To remove the entire current user's crontab:
+
+```bash
+crontab -r
+```
+
+> [!CAUTION]
+> `crontab -r` removes all cron jobs for the current user. Use it carefully.
+
+---
+
+### 9. Troubleshoot Cron Jobs
+
+If a job does not run, first check your scheduled tasks:
+
+```bash
+crontab -l
+```
+
+Check the log file:
+
+```bash
+tail /home/harry/cron.log
+```
+
+Check whether cron is running:
+
+```bash
+systemctl status cron
+```
+
+Cron uses the server's configured timezone, so make sure the schedule matches the system timezone.
+
+A simple test job is:
+
+```cron
+*/5 * * * * echo "Cron works!" >> /home/harry/cron.log
+```
+
+After a few minutes, check:
+
+```bash
+cat /home/harry/cron.log
+```
+
+If `Cron works!` appears repeatedly, cron is running correctly.
+
+---
 
 ## Understanding Linux Filesystem
 
