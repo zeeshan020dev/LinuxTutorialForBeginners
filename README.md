@@ -3260,25 +3260,323 @@ If `Cron works!` appears repeatedly, cron is running correctly.
 
 ## Understanding Linux Filesystem
 
-Common directories:
+Linux organizes files in a single **directory tree** starting from `/`, unlike Windows, which commonly uses separate drive letters such as `C:\` and `D:\`.
 
-| Path | Meaning |
-|---|---|
-| `/` | Filesystem root (top of directory tree) |
-| `/home` | User home directories |
-| `/etc` | System configuration files |
-| `/var` | Variable data (logs, spool, cache) |
-| `/usr` | Userland programs and libraries |
-| `/tmp` | Temporary files |
+```text
+/
+├── bin
+├── boot
+├── dev
+├── etc
+├── home
+├── lib
+├── media
+├── mnt
+├── opt
+├── proc
+├── root
+├── run
+├── sbin
+├── srv
+├── sys
+├── tmp
+├── usr
+└── var
+```
 
-Examples:
+You do not need to memorize every directory. Start with the most important ones.
+
+---
+
+### 1. `/` — Filesystem Root
+
+`/` is the top-level directory of the entire Linux filesystem. Everything exists somewhere underneath it.
+
+Move to the root directory:
+
+```bash
+cd /
+```
+
+List its contents:
+
+```bash
+ls /
+```
+
+> [!NOTE]
+> `/` and `/root` are different:
+>
+> ```text
+> /      → Root of the entire filesystem
+> /root  → Home directory of the root user
+> ```
+
+---
+
+### 2. `/home` — Users' Files
+
+Normal users usually store their personal files inside `/home`.
+
+```text
+/home
+├── harry
+├── alice
+└── bob
+```
+
+If your username is `harry`, your home directory is usually:
+
+```text
+/home/harry
+```
+
+You can return to your home directory using:
 
 ```bash
 cd ~
-cd /
-cd ..
-ls /etc
 ```
+
+or simply:
+
+```bash
+cd
+```
+
+When logged in as `harry`:
+
+```text
+~ = /home/harry
+```
+
+---
+
+### 3. `/etc` — System Configuration
+
+`/etc` stores system-wide configuration files.
+
+Common examples:
+
+```text
+/etc/ssh/
+/etc/apt/
+/etc/systemd/
+/etc/passwd
+/etc/hosts
+```
+
+View hostname and IP mappings:
+
+```bash
+cat /etc/hosts
+```
+
+View user account information:
+
+```bash
+cat /etc/passwd
+```
+
+```text
+/etc → System configuration
+```
+
+---
+
+### 4. `/var` — Variable Data
+
+`/var` stores data that changes frequently while Linux is running.
+
+Common locations include:
+
+```text
+/var/log
+/var/cache
+/var/lib
+```
+
+View available log files:
+
+```bash
+ls /var/log
+```
+
+Common log files may include:
+
+```text
+/var/log/syslog
+/var/log/auth.log
+```
+
+When troubleshooting a server, `/var/log` is often one of the first places to check.
+
+```text
+/var → Frequently changing data, logs, and caches
+```
+
+---
+
+### 5. `/usr` — Programs and Shared Resources
+
+`/usr` contains a large amount of installed software, commands, libraries, and shared resources.
+
+Common directories include:
+
+```text
+/usr/bin
+/usr/sbin
+/usr/lib
+/usr/share
+```
+
+List commands stored in `/usr/bin`:
+
+```bash
+ls /usr/bin
+```
+
+Find where Python 3 is installed:
+
+```bash
+which python3
+```
+
+You may see:
+
+```text
+/usr/bin/python3
+```
+
+Other commands may also exist here:
+
+```text
+/usr/bin/grep
+/usr/bin/curl
+```
+
+```text
+/usr → Installed user-space programs and resources
+```
+
+---
+
+### 6. `/bin` — Essential Commands
+
+`/bin` traditionally contains essential commands such as:
+
+```text
+ls
+cp
+mv
+cat
+rm
+```
+
+Check what `/bin` points to:
+
+```bash
+ls -ld /bin
+```
+
+On many modern Linux systems, `/bin` is a symbolic link to:
+
+```text
+/usr/bin
+```
+
+```text
+/bin → Essential command location, commonly merged with /usr/bin
+```
+
+---
+
+### 7. `/tmp` — Temporary Files
+
+`/tmp` is used by programs for temporary storage.
+
+Move into it:
+
+```bash
+cd /tmp
+```
+
+Create a temporary file:
+
+```bash
+touch test.txt
+```
+
+> [!WARNING]
+> Do not store important files in `/tmp`. Its contents may be removed during reboot or automatic cleanup.
+
+```text
+/tmp → Temporary files
+```
+
+---
+
+### 8. Other Important Directories
+
+| Directory | Purpose |
+|-----------|---------|
+| `/boot` | Files required to boot Linux |
+| `/dev` | Devices represented as files |
+| `/proc` | Information about processes and the kernel |
+| `/sys` | Kernel and device information |
+| `/run` | Runtime data created since boot |
+| `/mnt` | Temporary or manual mount points |
+| `/media` | Common location for removable media |
+| `/opt` | Optional or third-party software |
+| `/sbin` | Traditionally system administration commands |
+| `/root` | Home directory of the root user |
+
+---
+
+### 9. Walk Through the Filesystem
+
+Start from the root:
+
+```bash
+cd /
+```
+
+List its contents:
+
+```bash
+ls
+```
+
+Explore important directories such as:
+
+```text
+/home
+/etc
+/var
+/usr
+/tmp
+```
+
+Check your current location at any time:
+
+```bash
+pwd
+```
+
+---
+
+### Seven Directories to Remember
+
+```text
+/      → Everything starts here
+/home  → Users' personal files
+/etc   → System configuration
+/var   → Changing data and logs
+/usr   → Programs and shared resources
+/bin   → Essential commands
+/tmp   → Temporary files
+```
+
+---
 
 ## Understanding Nginx
 
